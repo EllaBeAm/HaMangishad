@@ -5,5 +5,115 @@
 body {
   margin: 0;
   height: 100vh;
-  background-color: turquoise;
+  background-color: #2D2C7D;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  border-bottom: 2px solid white;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+}
+
+nav.type-navbar {
+  margin-top: auto;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 10px;
+}
+
+button.type-btn {
+  background-color: transparent; /* Green */
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 3px 5px;
+}
+
+button.type-btn::after {
+  content: "";
+  position: relative;
+  top: 8px;
+  display: block;
+  width: 55px;
+  height: 4px;
+  background-color: #2D2C7D;
+  border: 2px solid white;
+  border-radius: 8px;
+  transition: all 300ms ease-in-out;
+}
+
+button.type-btn.active {
+  font-weight: bold;
+}
+button.type-btn.active::after {
+  background-color: white;
+}
+
+.header-spacer {
+  width: 10%;
+}
+
+nav.date-navbar {
+  margin-top: auto;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.date-btns-wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+button.date-btn {
+  background-color: transparent; /* Green */
+  border: 2px solid white;
+  border-bottom: none;
+  border-radius: 10px 10px 0px 0px;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 4px 25px;
+  transform-origin: bottom;
+  transform: rotateX(180deg);
+  transition: all 300ms ease-in-out;
+}
+
+button.date-btn span {
+  display: inline-block;
+  pointer-events: none;
+  transform: rotateX(-180deg);
+  transition: all 300ms ease-in-out;
+}
+
+button.date-btn.active {
+  color: #2D2C7D;
+  background-color: white;
+  transform: rotateX(0deg);
+}
+
+button.date-btn.active span {
+  font-weight: bold;
+  transform: rotateX(0deg);
+}
+
+button.shift-date-btn {
+  background-color: transparent; 
+  border: none;
+  color: white;
+  font-size: 10px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 5px 15px;
+  transform-origin: bottom;
+  transform: rotateX(180deg) translateY(20%) scale(1.5);
+  transition: all 300ms ease-in-out;
 }
