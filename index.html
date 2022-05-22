@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="main.js"></script>
+  <script defer src="main.js"></script>
   <link rel="stylesheet" href="style.css">
   <title>Document</title>
 </head>
@@ -20,6 +20,7 @@
      <button onclick="shiftDateBtns('right')" class="shift-date-btn">〉</button>
      <div class="date-btns-wrapper">
        <button onclick="selectedDate(event)" class="date-btn"><span>05/2016</span></button>
+       <button onclick="selectedDate(event)" class="date-btn"><span>05/2016</span></button>
        <button onclick="selectedDate(event)" class="date-btn active"><span>11/2015</span></button>
        <button onclick="selectedDate(event)" class="date-btn"><span>03/2015</span></button>
        <button onclick="selectedDate(event)" class="date-btn"><span>08/2014</span></button>
@@ -28,5 +29,10 @@
       <button onclick="shiftDateBtns('left')" class="shift-date-btn">〈</button>
    </nav> 
   </header>
+  <nav class="section-navbar">
+    <button onclick="selectedSection(event)" class="section-btn active">תקציר</button>
+    <button onclick="selectedSection(event)" class="section-btn">סריקות</button>
+    <button onclick="selectedSection(event)" class="section-btn">מעקב</button>
+  </nav>
 </body>
 </html>

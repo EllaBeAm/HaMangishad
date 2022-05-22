@@ -8,6 +8,15 @@ body {
   background-color: #2D2C7D;
 }
 
+button {
+  background-color: transparent; /* Green */
+  border: 2px solid white;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 header {
   position: fixed;
   top: 0;
@@ -27,13 +36,8 @@ nav.type-navbar {
 }
 
 button.type-btn {
-  background-color: transparent; /* Green */
   border: none;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  padding: 3px 5px;
+  padding: 2px 5px;
 }
 
 button.type-btn::after {
@@ -50,37 +54,39 @@ button.type-btn::after {
 }
 
 button.type-btn.active {
-  font-weight: bold;
+  /* font-weight: bold; */
+  text-shadow:1px 0px 0px white;
 }
+
 button.type-btn.active::after {
   background-color: white;
 }
 
 .header-spacer {
-  width: 10%;
+  width: 0%;
 }
 
 nav.date-navbar {
-  margin-top: auto;
+  margin-top: 25px;
+  height: 50px;
   display: flex;
   flex-direction: row-reverse;
+  margin-left: -5%;
 }
 
 .date-btns-wrapper {
   display: flex;
   flex-direction: row-reverse;
+  width: 400px;
+  overflow-x: hidden;
 }
 
 button.date-btn {
-  background-color: transparent; /* Green */
-  border: 2px solid white;
   border-bottom: none;
   border-radius: 10px 10px 0px 0px;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
   padding: 4px 25px;
+  height: 25px;
+  min-width: 100px;
   transform-origin: bottom;
   transform: rotateX(180deg);
   transition: all 300ms ease-in-out;
@@ -105,15 +111,34 @@ button.date-btn.active span {
 }
 
 button.shift-date-btn {
-  background-color: transparent; 
   border: none;
-  color: white;
   font-size: 10px;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
   padding: 5px 15px;
   transform-origin: bottom;
-  transform: rotateX(180deg) translateY(20%) scale(1.5);
+  transform: translateY(50%) scale(1.5);
   transition: all 300ms ease-in-out;
+}
+
+nav.section-navbar {
+  position: fixed;
+  right: 0;
+  top: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+button.section-btn {
+  border-right: none;
+  padding: 7px 25px 7px 30px;
+  border-radius: 20px 0 0 20px;
+  font-size: 1em;
+  transition: all 300ms ease-in-out;
+}
+
+button.section-btn.active {
+  /* font-weight: bold; */
+  text-shadow:1px 0px 0px #2D2C7D;
+  color: #2D2C7D;
+  background-color: white;
 }
