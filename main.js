@@ -1,5 +1,14 @@
+const State = {
+    testsType: 'All',
+    currTestIndex: 0,
+    currSection: 0
+}
+let data
+
 function selectedType(e) {
     makeBtnActive(e , "type-btn")
+    State.testsType = e.target.dataset.type
+    rerenderTabs()
 }
 
 function selectedDate(e) {
@@ -37,8 +46,16 @@ function shiftDateBtns(dir) {
     });
 }
 
-function createTabs(tests) {
+function getFilteredTests() {
+    if (State.testsType == 'All') return data
+    else return data.filter(test => test.type == State.testsType)
+}
+
+function rerenderTabs() {
     let dateTabsWrapperElm = document.querySelector(".date-btns-wrapper")
+    dateTabsWrapperElm.innerHTML = ''
+    let tests = getFilteredTests()
+    console.log(tests);
     tests.forEach((test, i)=> {
         // console.log(i + ": " + test);
         let newTabElm = document.createElement("button")
@@ -56,8 +73,8 @@ function createTabs(tests) {
 async function init() {
     // let dateBtnsWrapperElm = document.querySelector(".date-btns-wrapper")
     // dateBtnsWrapperElm.scrollBy(-100, 0);
-    let data = await fetchData()
-    createTabs(data)
+    data = await fetchData()
+    rerenderTabs(data)
 }
 
 function fetchData() {

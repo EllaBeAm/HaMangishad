@@ -1,3 +1,21 @@
+@font-face {
+  font-family: Heebo;
+  src: url("assets/fonts/Heebo/Heebo-VariableFont_wght.ttf") format("truetype");
+  font-display: block; /* Fix flickering */
+}
+
+@font-face {
+  font-family: Karantina;
+  src: url("assets/fonts/Karantina/Karantina-Regular.ttf") format("truetype");
+  font-display: block; /* Fix flickering */
+}
+
+@font-face {
+  font-family: Noto-Sans;
+  src: url("assets/fonts/Noto_Sans_Hebrew/NotoSansHebrew-VariableFont_wdth\,wght.ttf") format("truetype");
+  font-display: block; /* Fix flickering */
+}
+
 * {
   box-sizing: border-box;
 }
@@ -6,6 +24,11 @@ body {
   margin: 0;
   height: 100vh;
   background-color: #2D2C7D;
+  color: white;
+  direction: rtl;
+  font-family: Karantina;
+  background-image: url("assets/images/image\ 38.png");
+  background-size: cover;
 }
 
 button {
@@ -17,6 +40,8 @@ button {
   cursor: pointer;
 }
 
+/* ---------- Header ---------- */
+
 header {
   position: fixed;
   top: 0;
@@ -24,14 +49,14 @@ header {
   height: 50px;
   width: 100%;
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   justify-content: space-around;
 }
 
 nav.type-navbar {
   margin-top: auto;
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   gap: 10px;
 }
 
@@ -70,13 +95,13 @@ nav.date-navbar {
   margin-top: 25px;
   height: 50px;
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   margin-left: -5%;
 }
 
 .date-btns-wrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   width: 400px;
   overflow-x: hidden;
 }
@@ -87,6 +112,7 @@ button.date-btn {
   padding: 4px 25px;
   height: 25px;
   min-width: 100px;
+  max-width: 100px;
   transform-origin: bottom;
   transform: rotateX(180deg);
   transition: all 300ms ease-in-out;
@@ -141,4 +167,37 @@ button.section-btn.active {
   text-shadow:1px 0px 0px #2D2C7D;
   color: #2D2C7D;
   background-color: white;
+}
+
+/* ---------- Content ---------- */
+.content {
+  margin: 8% 10% 0 10%;
+  font-family: Heebo;
+}
+
+.info {
+  width: 35%;
+}
+
+h1, h2, h3 {
+  margin: 0;
+}
+
+h1 {
+  font-family: Karantina;
+  font-size: 85px;
+  margin-top: -16px;
+  letter-spacing: 2px;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 300;
+  margin-bottom: 16px;
+  white-space: pre;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 400;
 }
