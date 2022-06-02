@@ -194,7 +194,7 @@ h2 {
   font-size: 28px;
   font-weight: 300;
   margin-bottom: 16px;
-  white-space: pre;
+  max-width: 80%;
 }
 
 h3 {

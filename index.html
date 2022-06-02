@@ -10,9 +10,9 @@
 <body>
   <header>
    <nav class="type-navbar">
-     <button onclick="selectedType(event)" data-type="All" class="type-btn">כל הבדיקות</button>
+     <button onclick="selectedType(event)" data-type="All" class="type-btn active">כל הבדיקות</button>
      <button onclick="selectedType(event)" data-type="MRI" class="type-btn">MRI</button>
-     <button onclick="selectedType(event)" data-type="US" class="type-btn active">US</button>
+     <button onclick="selectedType(event)" data-type="US" class="type-btn">US</button>
      <button onclick="selectedType(event)" data-type="MAMM" class="type-btn">MAMM</button>
    </nav> 
    <div class="header-spacer"></div>
@@ -23,18 +23,18 @@
    </nav> 
   </header>
   <nav class="section-navbar">
-    <button onclick="selectedSection(event)" class="section-btn active">תקציר</button>
-    <button onclick="selectedSection(event)" class="section-btn">סריקות</button>
-    <button onclick="selectedSection(event)" class="section-btn">מעקב</button>
+    <button onclick="selectedSection(event)" dta-index=0 class="section-btn active">תקציר</button>
+    <button onclick="selectedSection(event)" dta-index=1 class="section-btn">סריקות</button>
+    <button onclick="selectedSection(event)" dta-index=2 class="section-btn">מעקב</button>
   </nav>
   <div class="content">
       <div class="info">
-      <h3>אולטראסאונד 11.2015</h3>
-      <h1>ממצא שפיר*</h1>
-      <h2>שאינו ממאיר</h2>
-      <h1>הנחיות</h1>
-      <h2>בדיקת אולטראסאונד
-חוזרת בעוד חצי שנה</h2>
+        <h3>אולטראסאונד 11.2015</h3>
+        <h1>ממצא שפיר*</h1>
+        <h2>שאינו ממאיר</h2>
+        <h1>הנחיות</h1>
+        <h2>בדיקת אולטראסאונד
+  חוזרת בעוד חצי שנה</h2>
     </div>
   </div>
   
