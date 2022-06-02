@@ -1,22 +1,21 @@
 function selectedType(e) {
-    let selectedTypeBtn = e.target
-    let typeButtons = document.querySelectorAll("button.type-btn")
-    typeButtons.forEach(btn => btn.classList.remove("active"))
-    selectedTypeBtn.classList.add("active")
+    makeBtnActive(e , "type-btn")
 }
 
 function selectedDate(e) {
-    let selectedTypeBtn = e.target
-    let typeButtons = document.querySelectorAll("button.date-btn")
-    typeButtons.forEach(btn => btn.classList.remove("active"))
-    selectedTypeBtn.classList.add("active")
+    makeBtnActive(e , "date-btn")
+    console.log(e.target.dataset.index);
 }
 
 function selectedSection(e) {
-    let selectedSectionBtn = e.target
-    let sectionButtons = document.querySelectorAll("button.section-btn")
-    sectionButtons.forEach(btn => btn.classList.remove("active"))
-    selectedSectionBtn.classList.add("active")
+    makeBtnActive(e , "section-btn")
+}
+
+function makeBtnActive(e, className) {
+    let selectedBtn = e.target
+    let allBtnsOfType = document.querySelectorAll(`button.${className}`)
+    allBtnsOfType.forEach(btn => btn.classList.remove("active"))
+    selectedBtn.classList.add("active")
 }
 
 function shiftDateBtns(dir) {
@@ -38,9 +37,32 @@ function shiftDateBtns(dir) {
     });
 }
 
-function init() {
-    let dateBtnsWrapperElm = document.querySelector(".date-btns-wrapper")
-    dateBtnsWrapperElm.scrollBy(-100, 0);
+function createTabs(tests) {
+    let dateTabsWrapperElm = document.querySelector(".date-btns-wrapper")
+    tests.forEach((test, i)=> {
+        // console.log(i + ": " + test);
+        let newTabElm = document.createElement("button")
+        newTabElm.onclick = selectedDate
+        newTabElm.dataset.index = i
+        newTabElm.classList.add("date-btn")
+        if (i==0) newTabElm.classList.add("active")
+        let btnTitleElm = document.createElement("span")
+        btnTitleElm.innerText = test.date
+        newTabElm.appendChild(btnTitleElm)
+        dateTabsWrapperElm.appendChild(newTabElm)
+    })
+}
+
+async function init() {
+    // let dateBtnsWrapperElm = document.querySelector(".date-btns-wrapper")
+    // dateBtnsWrapperElm.scrollBy(-100, 0);
+    let data = await fetchData()
+    createTabs(data)
+}
+
+function fetchData() {
+  return fetch('data.json')
+  .then(response => response.json())
 }
 
 init()

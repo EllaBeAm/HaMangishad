@@ -76,7 +76,7 @@ nav.date-navbar {
 
 .date-btns-wrapper {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   width: 400px;
   overflow-x: hidden;
 }

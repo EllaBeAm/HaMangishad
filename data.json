@@ -1,0 +1,488 @@
+[
+  {
+    "type": "US",
+    "date": "24.8.14",
+    "title": "ממצא שפיר*",
+    "subtitle": "שאינו ממאיר",
+    "instructions": "בדיקת אולטראסאונד חוזרת בעוד 6 חודשים",
+    "scans": [],
+    "findings": [
+      {
+        "side": "left",
+        "type": "lump",
+        "distance": "5",
+        "size": "1",
+        "amount": 1,
+        "hour": 3,
+        "birads": 2,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "US",
+    "date": "08.03.15",
+    "title": "בדיקה תקינה",
+    "subtitle": "ללא ממצאים חשודים",
+    "instructions": "אנא חזרי אל הרופאה המטפלת להמשך מעקב",
+    "scans": [],
+    "findings": [
+      {
+        "side": "left",
+        "type": "lump",
+        "distance": "5",
+        "size": "1",
+        "amount": 1,
+        "hour": 3,
+        "birads": 1,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "US",
+    "date": "05.05.16",
+    "title": "בדיקה תקינה",
+    "subtitle": "ללא ממצאים חדשים",
+    "instructions": "אנא חזרי אל הרופאה להמשך מעקב",
+    "scans": [],
+    "findings": [
+      {
+        "side": "left",
+        "type": "lump",
+        "distance": "5",
+        "size": "0.9",
+        "amount": 1,
+        "hour": 3,
+        "birads": 1,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "US",
+    "date": "14.09.16",
+    "title": "ממצא שפיר",
+    "subtitle": "שאינו ממאיר",
+    "instructions": "המשך בירור לפי שיקול קליני",
+    "scans": [],
+    "findings": [
+      {
+        "side": "left",
+        "type": "lump",
+        "distance": "5",
+        "size": "0.9",
+        "amount": 1,
+        "hour": 3,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "right",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.4",
+        "amount": 1,
+        "hour": 11,
+        "birads": 2,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "US",
+    "date": "30.03.17",
+    "title": "ממצאים שפירים",
+    "subtitle": "שאינם ממאירים",
+    "instructions": "אנא חזרי אל הרופאה המטפלת להמשך מעקב",
+    "scans": [],
+    "findings": [
+      {
+        "side": "left",
+        "type": "lump",
+        "distance": "5",
+        "size": "0.9",
+        "amount": 1,
+        "hour": 3,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "left",
+        "type": "cyst",
+        "distance": "1",
+        "size": "0.6",
+        "amount": 1,
+        "hour": 12,
+        "birads": 2,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "US",
+    "date": "15.10.17",
+    "title": "בדיקה תקינה",
+    "subtitle": "ללא ממצאים חשודים",
+    "instructions": "המשך מעקב שגרתי",
+    "scans": [],
+    "findings": [
+      {
+        "side": "left",
+        "type": "lump",
+        "distance": "",
+        "size": "",
+        "amount": "",
+        "hour": "",
+        "birads": 1,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "US",
+    "date": "25.04.18",
+    "title": "ממצאים שפירים",
+    "subtitle": "שאינם ממאירים",
+    "instructions": "אנא חזרי אל הרופאה המטפלת להמשך מעקב",
+    "scans": [],
+    "findings": [
+      {
+        "side": "left",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.6",
+        "amount": 1,
+        "hour": 7,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "right",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.4",
+        "amount": 1,
+        "hour": 10,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "right",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.8",
+        "amount": 1,
+        "hour": 10,
+        "birads": 2,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "US",
+    "date": "04.12.18",
+    "title": "ממצאים שפירים",
+    "subtitle": "שאינם ממאירים",
+    "instructions": "אנא חזרי אל הרופאה המטפלת להמשך מעקב",
+    "scans": [],
+    "findings": [
+      {
+        "side": "left",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.6",
+        "amount": 1,
+        "hour": 2,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "left",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.7",
+        "amount": 1,
+        "hour": 3,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "left",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.6",
+        "amount": 1,
+        "hour": 7,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "right",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.7",
+        "amount": 1,
+        "hour": 10,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "right",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.5",
+        "amount": 1,
+        "hour": 10,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "right",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.5",
+        "amount": 1,
+        "hour": 12,
+        "birads": 2,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "US",
+    "date": "25.12.19",
+    "title": "ממצאים שפירים",
+    "subtitle": "שאינם ממאירים",
+    "instructions": "אנא חזרי אל הרופאה המטפלת להמשך מעקב",
+    "scans": [],
+    "findings": [
+      {
+        "side": "left",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.6",
+        "amount": 1,
+        "hour": 2,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "left",
+        "type": "cyst",
+        "distance": "",
+        "size": "1.1",
+        "amount": 1,
+        "hour": 6,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "left",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.6",
+        "amount": 1,
+        "hour": 12,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "right",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.6",
+        "amount": 1,
+        "hour": 10,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "right",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.7",
+        "amount": 1,
+        "hour": 10,
+        "birads": 2,
+        "scan": ""
+      },
+      {
+        "side": "right",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.6",
+        "amount": 1,
+        "hour": 12,
+        "birads": 2,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "US",
+    "date": "04.07.21",
+    "title": "ממצאים שפירים",
+    "subtitle": "שאינם ממאירים",
+    "instructions": "אנא חזרי אל הרופאה המטפלת להמשך מעקב",
+    "scans": [],
+    "findings": [
+      {
+        "side": "left",
+        "type": "cyst",
+        "distance": "",
+        "size": "0.3",
+        "amount": 1,
+        "hour": 2,
+        "birads": 2,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "MRI",
+    "date": "15.11.15",
+    "title": "בדיקה תקינה*",
+    "subtitle": "*ללא ממצאים חשודים",
+    "instructions": "המשך מעקב שגרתי בהתאם לרמת הסיכון",
+    "scans": [
+      "MRI-04.17-1.png",
+      "MRI-04.17-2.png"
+    ],
+    "findings": []
+  },
+  {
+    "type": "MRI",
+    "date": "10.04.17",
+    "title": "בדיקה תקינה*",
+    "subtitle": "*ללא ממצאים חשודים",
+    "instructions": "ביקורת חוזרת בעוד שנה",
+    "scans": [
+      "MRI-04.17-1.png",
+      "MRI-04.17-2.png"
+    ],
+    "findings": []
+  },
+  {
+    "type": "MRI",
+    "date": "30.04.18",
+    "title": "ממצא שפיר",
+    "subtitle": "שאינו ממאיר",
+    "instructions": "המשך מעקב שגרתי",
+    "scans": [
+      "MRI-04.17-1.png",
+      "MRI-04.17-2.png"
+    ],
+    "findings": [
+      {
+        "side": "right",
+        "type": "lump",
+        "distance": "",
+        "size": "1.2",
+        "amount": 1,
+        "hour": [
+          5,
+          6,
+          7
+        ],
+        "birads": 2,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "MRI",
+    "date": "06.05.19",
+    "title": "ממצא שפיר",
+    "subtitle": "שאינו ממאיר",
+    "instructions": "המשך מעקב שגרתי",
+    "scans": [
+      "MRI-04.17-1.png",
+      "MRI-04.17-2.png"
+    ],
+    "findings": [
+      {
+        "side": "right",
+        "type": "lump",
+        "distance": "",
+        "size": "1.2",
+        "amount": 1,
+        "hour": [
+          5,
+          6,
+          7
+        ],
+        "birads": 2,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "MRI",
+    "date": "21.05.20",
+    "title": "ממצא חריג",
+    "subtitle": "חשד בינוני לממאירות",
+    "instructions": "ביופסיה אולטראסונד. במידה ולא יאותר באולטראסונד - ביופסיה MRI",
+    "scans": [
+      "MRI-04.17-1.png",
+      "MRI-04.17-2.png"
+    ],
+    "findings": [
+      {
+        "side": "right",
+        "type": "lump",
+        "distance": "",
+        "size": "0.8",
+        "amount": 1,
+        "hour": [
+          7,
+          8
+        ],
+        "birads": 4,
+        "scan": ""
+      },
+      {
+        "side": "right",
+        "type": "lump",
+        "distance": "",
+        "size": "1.4",
+        "amount": 1,
+        "hour": [
+          10,
+          11
+        ],
+        "birads": 4,
+        "scan": ""
+      }
+    ]
+  },
+  {
+    "type": "MRI",
+    "date": "07.12.20",
+    "title": "ממצא שפיר",
+    "subtitle": "שאינו ממאיר",
+    "instructions": "ביקורת MRI בעוד שנה",
+    "scans": [
+      "MRI-04.17-1.png",
+      "MRI-04.17-2.png"
+    ],
+    "findings": [
+      {
+        "side": "right",
+        "type": "lump",
+        "distance": "",
+        "size": "",
+        "amount": "",
+        "hour": [
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "birads": 2,
+        "scan": ""
+      }
+    ]
+  }
+]
