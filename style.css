@@ -176,10 +176,12 @@ button.section-btn.active {
 .content {
   margin: 8% 10% 0 10%;
   font-family: Heebo;
+  display: flex;
 }
 
 .info {
-  width: 35%;
+  min-width: 32%;
+  max-width: 32%;
 }
 
 h1, h2, h3 {
@@ -203,6 +205,13 @@ h2 {
 h3 {
   font-size: 16px;
   font-weight: 400;
+}
+
+.visuals {
+  display: flex;
+  margin-top: 16%;
+  width: 100%;
+  justify-content: space-between;
 }
 
 /* ---------- Footer Button ---------- */
