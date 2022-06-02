@@ -21,8 +21,11 @@
 }
 
 body {
-  margin: 0;
+  position: absolute;
+  top: 0;
   height: 100vh;
+  width: 100%;
+  margin: 0;
   background-color: #2D2C7D;
   color: white;
   direction: rtl;
@@ -200,4 +203,28 @@ h2 {
 h3 {
   font-size: 16px;
   font-weight: 400;
+}
+
+/* ---------- Footer Button ---------- */
+.footer-btns {
+  position: absolute;
+  bottom: 20%;
+  right: 10%;
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
+}
+
+.footer-btns button {
+  color: white;
+  border: 1px solid white;
+  border-radius: 50%;
+  width: 40px;
+  height: 38px;
+  padding: 6px;
+}
+
+.footer-btns button img {
+  width: 24px;
+  height: 24px;
 }
