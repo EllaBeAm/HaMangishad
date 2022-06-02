@@ -8,14 +8,14 @@ let data
 function selectedType(e) {
     makeBtnActive(e , "type-btn")
     State.testsType = e.target.dataset.type
-    rerenderTabs()
-    rerenderInfo()
+    renderTabs()
+    // renderInfo()
 }
 
 function selectedDate(e) {
     makeBtnActive(e , "date-btn")
     State.currTestIndex = e.target.dataset.index
-    rerenderInfo()
+    renderContent()
 }
 
 function selectedSection(e) {
@@ -54,6 +54,7 @@ function getFilteredTests() {
 }
 
 function getCurrentTest() {
+    console.log(data);
     return data.filter(test => test.index == State.currTestIndex)[0]
 }
 
@@ -69,8 +70,16 @@ function createAppendTextElm(type, text, parent) {
     parent.appendChild(textElm)
 }
 
-function rerenderInfo() {
+function renderContent() {
     let test = getCurrentTest()
+    renderInfo(test)
+    if (State.currSection ==0 && test.type == 'US') renderGraphs()
+}
+
+function renderGraphs() {
+}
+
+function renderInfo(test) {
     let infoElm = document.querySelector('.content .info')
     infoElm.innerHTML = ''
     let testHeaderText = typeToHeaderTextMap[test.type] + ' ' + test.date
@@ -81,7 +90,7 @@ function rerenderInfo() {
     createAppendTextElm('h2', test.instructions, infoElm)
 }
 
-function rerenderTabs() {
+function renderTabs() {
     let dateTabsWrapperElm = document.querySelector(".date-btns-wrapper")
     dateTabsWrapperElm.innerHTML = ''
     let tests = getFilteredTests()
@@ -91,7 +100,7 @@ function rerenderTabs() {
         newTabElm.onclick = selectedDate
         newTabElm.dataset.index = test.index
         newTabElm.classList.add("date-btn")
-        if (i==0) newTabElm.classList.add("active")
+        if (test.index == State.currTestIndex) newTabElm.classList.add("active")
         let btnTitleElm = document.createElement("span")
         btnTitleElm.innerText = test.date
         newTabElm.appendChild(btnTitleElm)
@@ -106,7 +115,8 @@ async function init() {
     data.forEach((test, i) => {
         test['index'] = i
     });
-    rerenderTabs(data)
+    renderTabs(data)
+    renderContent()
 }
 
 function fetchData() {

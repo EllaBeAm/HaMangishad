@@ -208,7 +208,7 @@ h3 {
 /* ---------- Footer Button ---------- */
 .footer-btns {
   position: absolute;
-  bottom: 20%;
+  bottom: 10%;
   right: 10%;
   display: flex;
   width: 200px;
