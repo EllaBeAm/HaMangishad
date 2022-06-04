@@ -1,30 +1,43 @@
 const State = {
     testsType: 'All',
     currTestIndex: 0,
-    currSection: 0
+    currSection: 0,
+    currSide: 'left'
 }
 let data
 
 function selectedType(e) {
-    makeBtnActive(e , "type-btn")
+    if (State.testsType == e.target.dataset.type) return
+    makeBtnActive(e , "button.type-btn")
     State.testsType = e.target.dataset.type
     renderTabs()
     // renderInfo()
 }
 
 function selectedDate(e) {
-    makeBtnActive(e , "date-btn")
+    if (State.currTestIndex == e.target.dataset.index) return
+    makeBtnActive(e , "button.date-btn")
     State.currTestIndex = e.target.dataset.index
     renderContent()
 }
 
 function selectedSection(e) {
-    makeBtnActive(e , "section-btn")
+    if (State.currSection == e.target.dataset.index) return
+    makeBtnActive(e , "button.section-btn")
+    State.currSection = e.target.dataset.index
+    renderContent()
+}
+
+function selectedSide(e) {
+    if (State.currSide == e.target.parentElement.dataset.side) return
+    makeBtnActive(e , ".info .graphs .side-wrapper button")
+    State.currSide = e.target.parentElement.dataset.side
+    renderContent()
 }
 
 function makeBtnActive(e, className) {
     let selectedBtn = e.target
-    let allBtnsOfType = document.querySelectorAll(`button.${className}`)
+    let allBtnsOfType = document.querySelectorAll(className)
     allBtnsOfType.forEach(btn => btn.classList.remove("active"))
     selectedBtn.classList.add("active")
 }
@@ -70,30 +83,132 @@ function createAppendTextElm(type, text, parent) {
 
 function renderContent() {
     let test = getCurrentTest()
-    renderInfo(test)
-    if (State.currSection ==0 && test.type == 'US') renderGraphs(test)
-    else renderScans()
+    let doRenderInstructions = State.currSection==0
+    renderInfo(test, doRenderInstructions)
+    if (test.type == 'US') renderGraphsManager(test)
+    if (State.currSection == 1 && test.type == 'US') renderScans(test)
 }
 
-function renderScans() {
+function renderScans(test) {
     let visualsElm = document.querySelector('.visuals')
     visualsElm.innerHTML = ''
+    let scansWrapperElm = document.createElement('div')
+    scansWrapperElm.classList.add('scans-wrapper')
+    let sideFindings = test.findings.filter(finding => finding.side == State.currSide)
+    sideFindings.forEach(finding => {
+        let scanElm = document.createElement('img')
+        scanElm.src = 'assets/images/image 45.png'
+        scanElm.classList.add('scan')
+        scansWrapperElm.appendChild(scanElm)
+    })
+    visualsElm.appendChild(scansWrapperElm)
 }
 
-function renderGraphs(test) {
-    let visualsElm = document.querySelector('.content .visuals')
-    visualsElm.innerHTML = ''
+function renderGraphsManager(test) {
+    if (State.currSection == 0) {
+        let parent = document.querySelector('.content .visuals')
+        renderGraphs(test, 311, 155, parent)
+    }
+    else if (State.currSection == 1) {
+        let parent = document.querySelector('.content .info .graphs')
+        renderGraphs(test, 101, 50, parent)
+        let svgElms = Array.from(parent.querySelectorAll("svg"))
+        svgElms.forEach((elm, i) => {
+            let side = i==0? 'left':'right'
+            let wrapper = document.createElement('div')
+            wrapper.classList.add(`side-wrapper`)
+            wrapper.dataset['side'] = side
+            wrapper.appendChild(elm)
+            let btnElm = document.createElement('button')
+            if (State.currSide == side) btnElm.classList.add('active')
+            btnElm.innerText = side=='right'? 'ימין':'שמאל'
+            btnElm.onclick = selectedSide
+            wrapper.appendChild(btnElm)
+            parent.appendChild(wrapper)
+        })
+    } else {
+        let parent = document.querySelector('.content .visuals')
+        // TODO: get filteres list of findings with dates and pass to function
+        let timeMap = getTimeMap()
+        console.log(timeMap);
+        renderTimeGraphs(timeMap, 311, 155, parent)
+    }
+}
+
+function getTimeMap() {
+    let res = {
+        left: {},
+        right: {}
+    }
+    data.forEach(test => {
+        test.findings.forEach(finding => {
+            if (!Array.isArray(finding.hour)) finding.hour=[finding.hour]
+            finding.hour.forEach(hour => {
+                if (res[finding.side][hour]) res[finding.side][hour]++
+                else res[finding.side][hour]=1
+            })
+        })
+    })
+    return res
+}
+
+function renderTimeGraphs(timeMap, svgSize, radius, parent) {
+    parent.innerHTML = ''
     let sides = ["left", "right"]
-    console.log(test.findings);
+    sides.forEach(side=>{
+        let svgElm = document.createElementNS('http://www.w3.org/2000/svg' ,'svg')
+        svgElm.setAttributeNS(null, 'width', svgSize);
+        svgElm.setAttributeNS(null, 'height', svgSize);
+        let defsElm = document.createElementNS('http://www.w3.org/2000/svg' ,'defs')
+        svgElm.appendChild(defsElm)
+        let circleElm1 = document.createElementNS('http://www.w3.org/2000/svg' ,'circle')
+        circleElm1.setAttributeNS(null, 'cx', radius);
+        circleElm1.setAttributeNS(null, 'cy', radius);
+        circleElm1.setAttributeNS(null, 'r', radius);
+        circleElm1.setAttributeNS(null, 'fill', 'transparent');
+        circleElm1.setAttributeNS(null, 'stroke', 'white');
+        circleElm1.setAttributeNS(null, 'stroke-dasharray', '4 4');
+        let circleElm2 = circleElm1.cloneNode()
+        circleElm2.setAttributeNS(null, 'fill', 'none');
+        circleElm2.setAttributeNS(null, 'r', radius*2/3);
+        let circleElm3 = circleElm2.cloneNode()
+        circleElm3.setAttributeNS(null, 'r', radius/3);
+        svgElm.append(circleElm1)
+        let hours = timeMap[side]
+        for (let hour in hours) {
+            let chunckElm = document.createElementNS("http://www.w3.org/2000/svg", "path")
+            let d = pathFromObject(hour, radius)
+            chunckElm.setAttributeNS(null, "d", d);
+            let color
+            if (hours[hour] == 1) color='#FBB040'
+            else if (hours[hour] == 2) color='#F8893D'
+            else if (hours[hour] == 3) color='#F56239'
+            else if (hours[hour] >= 4) color='#F23B36'
+            chunckElm.setAttributeNS(null, 'fill', color);
+            chunckElm.setAttributeNS(null, 'stroke',color);
+            svgElm.append(chunckElm)
+        }
+        let d = ''
+        let slicesLinesElm = document.createElementNS("http://www.w3.org/2000/svg", "path")
+        slicesLinesElm.setAttributeNS(null, "d", d);
+        slicesLinesElm.setAttributeNS(null, 'stroke', 'white');
+        svgElm.append(slicesLinesElm)
+        svgElm.append(circleElm2)
+        svgElm.append(circleElm3)
+        
+        parent.appendChild(svgElm)
+    })
+}
+
+function renderGraphs(test, svgSize, radius, parent) {
+    parent.innerHTML = ''
+    let sides = ["left", "right"]
     sides.forEach(side=>{
         let findings = test.findings.filter(finding => finding.side == side)
         if (!findings || findings.length == 0) {
-            console.log("no findingnd");
-            let radius = 155
             let svgElm = document.createElementNS('http://www.w3.org/2000/svg' ,'svg')
-            svgElm.setAttributeNS(null, 'width', 320);
-            svgElm.setAttributeNS(null, 'height', 320);
-            let defsElm = document.createElementNS('http://www.w3.org/2000/svg' ,'defs')
+            svgElm.setAttributeNS(null, 'width', svgSize);
+            svgElm.setAttributeNS(null, 'height', svgSize);
             let circleElm1 = document.createElementNS('http://www.w3.org/2000/svg' ,'circle')
             circleElm1.setAttributeNS(null, 'cx', radius);
             circleElm1.setAttributeNS(null, 'cy', radius);
@@ -110,12 +225,11 @@ function renderGraphs(test) {
             svgElm.append(circleElm2)
             svgElm.append(circleElm3)
             
-            visualsElm.appendChild(svgElm)
+            parent.appendChild(svgElm)
         } else {
-            let radius = 155
             let svgElm = document.createElementNS('http://www.w3.org/2000/svg' ,'svg')
-            svgElm.setAttributeNS(null, 'width', 320);
-            svgElm.setAttributeNS(null, 'height', 320);
+            svgElm.setAttributeNS(null, 'width', svgSize);
+            svgElm.setAttributeNS(null, 'height', svgSize);
             let defsElm = document.createElementNS('http://www.w3.org/2000/svg' ,'defs')
             defsElm.innerHTML = `<pattern id='stripes-pattern' patternUnits='userSpaceOnUse' width='20' height='40' patternTransform='scale(1) rotate(0)'>
                         <rect x='0' y='0' width='100%' height='100%' fill='#00aeef'/>
@@ -145,7 +259,7 @@ function renderGraphs(test) {
             for (let i=0; i<findings.length; i++) {
                 let area = findings[i]
                 let chunckElm = document.createElementNS("http://www.w3.org/2000/svg", "path")
-                let d = pathFromObject(area, radius)
+                let d = pathFromObject(area.hour, radius)
                 chunckElm.setAttributeNS(null, "d", d);
                 chunckElm.setAttributeNS(null, 'stroke', 'white');
                 let patternFillUrl
@@ -173,14 +287,14 @@ function renderGraphs(test) {
             svgElm.append(circleElm2)
             svgElm.append(circleElm3)
             
-            visualsElm.appendChild(svgElm)
+            parent.appendChild(svgElm)
         }
     })
 }
 
-function pathFromObject(obj, radius) {
+function pathFromObject(hour, radius) {
 	let str = ''
-	let a1 = (obj.hour-3.5)*(2*Math.PI/12)
+	let a1 = (hour-3.5)*(2*Math.PI/12)
 
 	const cos = Math.cos;
 	const sin = Math.sin;
@@ -190,7 +304,7 @@ function pathFromObject(obj, radius) {
 	let rx1 = radius
 	let ry1 = radius
 	let t1 = a1
-  let φ = 0
+    let φ = 0
 	let Δ = (2*π/12)
 	const f_matrix_times = (( [[a,b], [c,d]], [x,y]) => [ a * x + b * y, c * x + d * y]);
 	const f_rotate_matrix = (x => [[cos(x),-sin(x)], [sin(x), cos(x)]]);
@@ -208,15 +322,34 @@ function pathFromObject(obj, radius) {
 }
 
 
-function renderInfo(test) {
+function renderInfo(test, doRenderInstructions) {
     let infoElm = document.querySelector('.content .info')
     infoElm.innerHTML = ''
-    let testHeaderText = typeToHeaderTextMap[test.type] + ' ' + test.date
+    let testHeaderText 
+    let testTitleText
+    let testSubtitleText
+    if (State.currSection == 2) {
+        testHeaderText = 'מעקב'
+        testTitleText = 'בדיקות קודמות'
+        testSubtitleText = 'אזורים שבהם ממצאים חוזרים'
+    } else {
+        testHeaderText = typeToHeaderTextMap[test.type] + ' ' + test.date
+        testTitleText = test.title
+        testSubtitleText = test.subtitle
+    }
     createAppendTextElm('h3', testHeaderText, infoElm)
-    createAppendTextElm('h1', test.title, infoElm)
-    createAppendTextElm('h2', test.subtitle, infoElm)
-    createAppendTextElm('h1', 'הנחיות', infoElm)
-    createAppendTextElm('h2', test.instructions, infoElm)
+    createAppendTextElm('h1', testTitleText, infoElm)
+    createAppendTextElm('h2', testSubtitleText, infoElm)
+    if (doRenderInstructions) {
+        createAppendTextElm('h1', 'הנחיות', infoElm)
+        createAppendTextElm('h2', test.instructions, infoElm)
+    } else if (State.currSection == 2)  {
+        createAppendTextElm('h3', '>> בחרי אזור כדי לצפות ברשימת הבדיקות בהן חופיע', infoElm)
+    } else {
+        let graphsElm = document.createElement('div')
+        graphsElm.classList.add('graphs')
+        infoElm.appendChild(graphsElm)
+    }
 }
 
 function renderTabs() {
