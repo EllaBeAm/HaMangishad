@@ -42,6 +42,9 @@ button {
   text-decoration: none;
   cursor: pointer;
 }
+button[disabled] {
+  cursor: auto;
+}
 
 /* ---------- Header ---------- */
 
@@ -151,7 +154,7 @@ button.shift-date-btn {
 nav.section-navbar {
   position: fixed;
   right: 0;
-  top: 120px;
+  top: 170px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -174,14 +177,14 @@ button.section-btn.active {
 
 /* ---------- Content ---------- */
 .content {
-  margin: 8% 10% 0 10%;
+  margin: 13% 10% 0 10%;
   font-family: Heebo;
   display: flex;
 }
 
 .info {
-  min-width: 32%;
-  max-width: 32%;
+  min-width: 37%;
+  max-width: 37%;
 }
 
 h1, h2, h3 {
@@ -192,7 +195,7 @@ h1 {
   font-family: Karantina;
   font-size: 85px;
   margin-top: -16px;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
 }
 
 h2 {
@@ -209,7 +212,7 @@ h3 {
 
 .visuals {
   display: flex;
-  margin-top: 16%;
+  /* margin-top: 16%; */
   width: 100%;
   justify-content: space-between;
 }

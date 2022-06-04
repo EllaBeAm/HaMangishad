@@ -117,17 +117,17 @@ function renderGraphs(test) {
             svgElm.setAttributeNS(null, 'width', 320);
             svgElm.setAttributeNS(null, 'height', 320);
             let defsElm = document.createElementNS('http://www.w3.org/2000/svg' ,'defs')
-            defsElm.innerHTML = `<pattern id='stripes-pattern' patternUnits='userSpaceOnUse' width='20' height='80' patternTransform='scale(1) rotate(0)'>
+            defsElm.innerHTML = `<pattern id='stripes-pattern' patternUnits='userSpaceOnUse' width='20' height='40' patternTransform='scale(1) rotate(0)'>
                         <rect x='0' y='0' width='100%' height='100%' fill='#00aeef'/>
-                        <path d='M0 10h20z' stroke-width='1' stroke='hsla(0, 100%, 100%, 1)' fill='none'/>
-                        <path d='M0 30h20z' stroke-width='1' stroke='hsla(0, 100%, 100%, 1)' fill='none'/>
-                        <path d='M0 50h20z' stroke-width='1' stroke='hsla(0, 100%, 100%, 1)' fill='none'/>
-                        <path d='M0 70h20z' stroke-width='1' stroke='hsla(0, 100%, 100%, 1)' fill='none'/>
+                        <path d='M0 5h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                        <path d='M0 15h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                        <path d='M0 25h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                        <path d='M0 35h20z' stroke-width='1' stroke='#fff' fill='none'/>
                     </pattern>
-                    <pattern id='dots-pattern' patternUnits='userSpaceOnUse' width='40' height='40' patternTransform='scale(1) rotate(0)'>
+                    <pattern id='dots-pattern' patternUnits='userSpaceOnUse' width='24' height='24' patternTransform='scale(1) rotate(0)'>
                         <rect x='0' y='0' width='100%' height='100%' fill='#00aeef'/>
-                        <circle cx="10" cy="10" r="3" fill='#fff'/>
-                        <circle cx="30" cy="30" r="3" fill='#fff'/>
+                        <circle cx="8" cy="8" r="2" fill='#fff'/>
+                        <circle cx="20" cy="20" r="2" fill='#fff'/>
                     </pattern>`
             svgElm.appendChild(defsElm)
             let circleElm1 = document.createElementNS('http://www.w3.org/2000/svg' ,'circle')
@@ -156,16 +156,16 @@ function renderGraphs(test) {
                 svgElm.append(chunckElm)
             }
             let d = ''
-            for (let i=0; i<6; i++) {
-                let a1 = (i+0.5)*(2*Math.PI/12)
-                let a2 = (i+6.5)*(2*Math.PI/12)
-                let r = (radius/10)
-                let x1 = Math.round(Math.sin(a1)*r)*10+radius
-                let y1 = Math.round(Math.cos(a1)*r)*10+radius
-                let x2 = Math.round(Math.sin(a2)*r)*10+radius
-                let y2 = Math.round(Math.cos(a2)*r)*10+radius
-                d += `M ${x1} ${y1} L ${x2} ${y2} `
-            }
+            // for (let i=0; i<6; i++) {
+            //     let a1 = (i+0.5)*(2*Math.PI/12)
+            //     let a2 = (i+6.5)*(2*Math.PI/12)
+            //     let r = (radius/10)
+            //     let x1 = Math.round(Math.sin(a1)*r)*10+radius
+            //     let y1 = Math.round(Math.cos(a1)*r)*10+radius
+            //     let x2 = Math.round(Math.sin(a2)*r)*10+radius
+            //     let y2 = Math.round(Math.cos(a2)*r)*10+radius
+            //     d += `M ${x1} ${y1} L ${x2} ${y2} `
+            // }
             let slicesLinesElm = document.createElementNS("http://www.w3.org/2000/svg", "path")
             slicesLinesElm.setAttributeNS(null, "d", d);
             slicesLinesElm.setAttributeNS(null, 'stroke', 'white');
