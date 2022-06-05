@@ -87,6 +87,111 @@ function renderContent() {
     renderInfo(test, doRenderInstructions)
     if (test.type == 'US') renderGraphsManager(test)
     if (State.currSection == 1 && test.type == 'US') renderScans(test)
+    else if (State.currSection == 2) renderRangeSlider()
+}
+
+function renderRangeSlider() {
+    let allYears = [...new Set(data.map(test=>stringToYear(test.date)).sort())]
+    let infoElm = document.querySelector('.content .info')
+    let yearsWrapper = document.createElement('div')
+    yearsWrapper.classList.add('years-wrapper')
+    let yearsTitle = document.createElement('h3')
+    yearsTitle.innerText = 'שנים'
+    yearsWrapper.appendChild(yearsTitle)
+    let sliderOneValue = document.createElement('div')
+    sliderOneValue.classList.add('slider-value')
+    sliderOneValue.dataset.index=0
+    sliderOneValue.innerText=0
+    let sliderTwoValue = sliderOneValue.cloneNode()
+    sliderTwoValue.dataset.index=1
+    sliderTwoValue.innerText=1
+    yearsWrapper.appendChild(sliderOneValue)
+    yearsWrapper.appendChild(sliderTwoValue)
+    let sliderWrapper = document.createElement('div')
+    sliderWrapper.classList.add('slider-wrapper')
+    let sliderTrackElm = document.createElement('div')
+    sliderTrackElm.classList.add('slider-track')
+    sliderWrapper.appendChild(sliderTrackElm)
+    let sliderOneElm = document.createElement('input')
+    sliderOneElm.type = 'range'
+    sliderOneElm.min = allYears[0]
+    sliderOneElm.max = allYears[allYears.length-1]
+    sliderOneElm.step = 1
+    sliderOneElm.value = allYears[0]
+    sliderOneElm.dataset.index = 0
+    sliderOneElm.oninput = sliderInput
+    let sliderTwoElm = sliderOneElm.cloneNode()
+    sliderTwoElm.oninput = sliderInput
+    sliderTwoElm.value = allYears[allYears.length-1]
+    sliderTwoElm.dataset.index = 1
+    sliderWrapper.appendChild(sliderOneElm)
+    sliderWrapper.appendChild(sliderTwoElm)
+    yearsWrapper.appendChild(sliderWrapper)
+    infoElm.appendChild(yearsWrapper)
+    let legendElm = document.createElement('div')
+    let keysMap = [
+        {text: 'ממצא יחיד', color:'#FBB040'},
+        {text: 'ממצא שחזר בשתי בדיקות', color:'#F8893D'},
+        {text: 'ממצא שחזר בשלוש בדיקות', color:'#F56239'},
+        {text: 'ממצא שחזר בארבע בדיקות ומעלה', color:'#F23B36'},
+    ]
+    legendElm.classList.add('legend')
+    for (let i=0; i<4; i++) {
+        let keyWrapperElm = document.createElement('div')
+        keyWrapperElm.classList.add('key')
+        let circleElm = document.createElement('div')
+        circleElm.classList.add('circle')
+        circleElm.style.backgroundColor = keysMap[i].color
+        let descElm = document.createElement('p')
+        descElm.classList.add('desc')
+        descElm.innerText = keysMap[i].text
+        keyWrapperElm.appendChild(circleElm)
+        keyWrapperElm.appendChild(descElm)
+        legendElm.appendChild(keyWrapperElm)
+    }
+    infoElm.appendChild(legendElm)
+    styleSlider();
+}
+
+function sliderInput(e) {
+    let thisSlider = e.target
+    let bothSliders = document.querySelectorAll('.slider-wrapper input')
+    let otherSlider = Array.from(bothSliders).filter(elm => elm!=thisSlider)[0]
+    let biggerSlider = Array.from(bothSliders).filter(elm => elm.dataset.index==1)[0]
+    let smallerSlider = Array.from(bothSliders).filter(elm => elm.dataset.index==0)[0]
+    let edgeValue
+    if (thisSlider==smallerSlider) {
+        edgeValue = parseInt(otherSlider.value) - parseInt(thisSlider.step)
+    } else {
+        edgeValue = parseInt(otherSlider.value) + parseInt(thisSlider.step)
+    }
+    if(parseInt(biggerSlider.value) - parseInt(smallerSlider.value) <= parseInt(thisSlider.step)){
+        thisSlider.value = edgeValue
+    }
+    styleSlider(smallerSlider, biggerSlider);
+    renderGraphsManager()
+}
+
+function styleSlider(smallerSlider, biggerSlider){
+    if (!smallerSlider) {
+        let bothSliders = document.querySelectorAll('.slider-wrapper input')
+        biggerSlider = Array.from(bothSliders).filter(elm => elm.dataset.index==1)[0]
+        smallerSlider = Array.from(bothSliders).filter(elm => elm.dataset.index==0)[0]
+    }
+    let sliderTrack = document.querySelector('.slider-track')
+    percent1 = ((smallerSlider.value-smallerSlider.min) / (smallerSlider.max-smallerSlider.min)) * 100;
+    percent2 = ((biggerSlider.value-biggerSlider.min) / (biggerSlider.max-biggerSlider.min)) * 100;
+    sliderTrack.style.background = `linear-gradient(to right, transparent ${percent1}% , #fff ${percent1}% , #fff ${percent2}%, transparent ${percent2}%)`;
+    let bothValuesElms = document.querySelectorAll('.slider-value')
+    let smallerValueElm = Array.from(bothValuesElms).filter(elm => elm.dataset.index==0)[0]
+    let biggerValueElm = Array.from(bothValuesElms).filter(elm => elm.dataset.index==1)[0]
+    smallerValueElm.innerText = smallerSlider.value
+    let sliderWidth = smallerSlider.parentElement.getBoundingClientRect().width
+    let smallerValueWidth = smallerValueElm.getBoundingClientRect().width
+    smallerValueElm.style.left = ((percent1/100)*(sliderWidth-22)-smallerValueWidth/2+12) + 'px'
+    biggerValueElm.innerText = biggerSlider.value
+    let biggerValueWidth = biggerValueElm.getBoundingClientRect().width
+    biggerValueElm.style.left = ((percent2/100)*(sliderWidth-22)-biggerValueWidth/2+12) + 'px'
 }
 
 function renderScans(test) {
@@ -104,7 +209,8 @@ function renderScans(test) {
     visualsElm.appendChild(scansWrapperElm)
 }
 
-function renderGraphsManager(test) {
+function renderGraphsManager() {
+    let test = getCurrentTest()
     if (State.currSection == 0) {
         let parent = document.querySelector('.content .visuals')
         renderGraphs(test, 311, 155, parent)
@@ -128,7 +234,6 @@ function renderGraphsManager(test) {
         })
     } else {
         let parent = document.querySelector('.content .visuals')
-        // TODO: get filteres list of findings with dates and pass to function
         let timeMap = getTimeMap()
         console.log(timeMap);
         renderTimeGraphs(timeMap, 311, 155, parent)
@@ -140,7 +245,16 @@ function getTimeMap() {
         left: {},
         right: {}
     }
-    data.forEach(test => {
+    let minYear = document.querySelector('.slider-wrapper input[data-index="0"]')?.value
+    let maxYear = document.querySelector('.slider-wrapper input[data-index="1"]')?.value
+    console.log(minYear, maxYear);
+    let filteredData
+    if (minYear && maxYear) {
+        filteredData = data.filter(test=>stringToYear(test.date)>=minYear && stringToYear(test.date)<=maxYear)
+    } else {
+        filteredData = data
+    }
+    filteredData.forEach(test => {
         test.findings.forEach(finding => {
             if (!Array.isArray(finding.hour)) finding.hour=[finding.hour]
             finding.hour.forEach(hour => {
@@ -150,6 +264,10 @@ function getTimeMap() {
         })
     })
     return res
+}
+
+function stringToYear(str) {
+    return parseInt('20'+str.split('.')[2])
 }
 
 function renderTimeGraphs(timeMap, svgSize, radius, parent) {
@@ -173,7 +291,6 @@ function renderTimeGraphs(timeMap, svgSize, radius, parent) {
         circleElm2.setAttributeNS(null, 'r', radius*2/3);
         let circleElm3 = circleElm2.cloneNode()
         circleElm3.setAttributeNS(null, 'r', radius/3);
-        svgElm.append(circleElm1)
         let hours = timeMap[side]
         for (let hour in hours) {
             let chunckElm = document.createElementNS("http://www.w3.org/2000/svg", "path")
@@ -193,6 +310,7 @@ function renderTimeGraphs(timeMap, svgSize, radius, parent) {
         slicesLinesElm.setAttributeNS(null, "d", d);
         slicesLinesElm.setAttributeNS(null, 'stroke', 'white');
         svgElm.append(slicesLinesElm)
+        svgElm.append(circleElm1)
         svgElm.append(circleElm2)
         svgElm.append(circleElm3)
         
