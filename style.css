@@ -398,6 +398,10 @@ input[type="range"]:active::-webkit-slider-thumb{
   grid-area: active;
 }
 
+svg text {
+  direction: ltr;
+  color: white;
+  font-size: 28px;
 }
 
 /* ---------- Footer Button ---------- */

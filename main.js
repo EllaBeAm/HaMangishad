@@ -204,9 +204,9 @@ function renderScans(test) {
     let hasActive = false
     sideFindings.forEach(finding => {
         finding.scans.forEach((scan, i) => {
-        let scanElm = document.createElement('img')
+            let scanElm = document.createElement('img')
             scanElm.src = 'assets/findings/' + scan + '.png'
-        scanElm.classList.add('scan')
+            scanElm.classList.add('scan')
             if (i == 0) {
                 scanElm.classList.add('active')
                 hasActive = true
@@ -344,25 +344,71 @@ function renderGraphs(test, svgSize, radius, parent) {
         let findings = test.findings.filter(finding => finding.side == side)
         if (!findings || findings.length == 0) {
             let svgElm = document.createElementNS('http://www.w3.org/2000/svg' ,'svg')
+            // svgElm.setAttributeNS(null, 'xmlns', "http://www.w3.org/2000/svg");
+            // svgElm.setAttributeNS(null, 'xlink:xmlns', "http://www.w3.org/1999/xlink");
             svgElm.setAttributeNS(null, 'width', svgSize);
             svgElm.setAttributeNS(null, 'height', svgSize);
-            let circleElm1 = document.createElementNS('http://www.w3.org/2000/svg' ,'circle')
-            circleElm1.setAttributeNS(null, 'cx', radius);
-            circleElm1.setAttributeNS(null, 'cy', radius);
-            circleElm1.setAttributeNS(null, 'r', radius);
-            circleElm1.setAttributeNS(null, 'fill', 'transparent');
-            circleElm1.setAttributeNS(null, 'stroke', 'white');
-            circleElm1.setAttributeNS(null, 'stroke-dasharray', '4 4');
-            let circleElm2 = circleElm1.cloneNode()
-            circleElm2.setAttributeNS(null, 'fill', 'none');
-            circleElm2.setAttributeNS(null, 'r', radius*2/3);
-            let circleElm3 = circleElm2.cloneNode()
+            let defsElm = document.createElementNS('http://www.w3.org/2000/svg' ,'defs')
+            defsElm.innerHTML = `<path id="arc1" d="${getArc1Path(svgSize, radius, true)}" />
+            <path id="arc2" d="${getArc2Path(svgSize, radius*2/3 - 10, true)}" />`
+            svgElm.appendChild(defsElm)
+            let circleElm3 = document.createElementNS('http://www.w3.org/2000/svg' ,'circle')
+            circleElm3.setAttributeNS(null, 'cx', radius);
+            circleElm3.setAttributeNS(null, 'cy', radius);
+            circleElm3.setAttributeNS(null, 'fill', 'transparent');
+            circleElm3.setAttributeNS(null, 'stroke', 'white');
+            circleElm3.setAttributeNS(null, 'stroke-dasharray', '4 4');
+            let arc1 = document.createElementNS('http://www.w3.org/2000/svg' ,'path')
+            arc1.setAttributeNS(null, 'fill', 'transparent');
+            arc1.setAttributeNS(null, 'stroke', 'white');
+            arc1.setAttributeNS(null, 'stroke-dasharray', '4 4');
+            arc1.setAttributeNS(null, 'd', getArc1Path(svgSize, radius));
+            let arc2 = arc1.cloneNode()
+            arc2.setAttributeNS(null, 'd', getArc2Path(svgSize, radius*2/3));
+            // let circleElm1 = document.createElementNS('http://www.w3.org/2000/svg' ,'circle')
+            // circleElm1.setAttributeNS(null, 'cx', radius);
+            // circleElm1.setAttributeNS(null, 'cy', radius);
+            // circleElm1.setAttributeNS(null, 'r', radius);
+            // circleElm1.setAttributeNS(null, 'fill', 'transparent');
+            // circleElm1.setAttributeNS(null, 'stroke', 'white');
+            // circleElm1.setAttributeNS(null, 'stroke-dasharray', '4 4');
+            // circleElm1.setAttributeNS(null, 'id', 'circle-1');
+            // let circleElm2 = circleElm1.cloneNode()
+            // circleElm2.setAttributeNS(null, 'fill', 'none');
+            // circleElm2.setAttributeNS(null, 'r', radius*2/3);
+            // circleElm2.setAttributeNS(null, 'id', 'circle-2');
+            // let circleElm3 = circleElm2.cloneNode()
             circleElm3.setAttributeNS(null, 'r', radius/3);
-            svgElm.append(circleElm1)
-            svgElm.append(circleElm2)
+            circleElm3.setAttributeNS(null, 'id', 'circle-3');
+            // svgElm.append(circleElm1)
+            // svgElm.append(circleElm2)
             svgElm.append(circleElm3)
-            
+            svgElm.append(arc1)
+            svgElm.append(arc2)
+            let textElm1 = document.createElementNS('http://www.w3.org/2000/svg' ,'text')
+            let textPathElm1 = document.createElementNS('http://www.w3.org/2000/svg' ,'textPath')
+            textPathElm1.setAttributeNS(null, 'href', `#arc2`);
+            textPathElm1.setAttributeNS(null, 'startOffset', '12.5%');
+            textPathElm1.setAttributeNS(null, 'fill', 'white');
+            textPathElm1.innerHTML = 'בדיקה תקינה'
+            textElm1.appendChild(textPathElm1)
+            let textElm2 = document.createElementNS('http://www.w3.org/2000/svg' ,'text')
+            let textPathElm2 = document.createElementNS('http://www.w3.org/2000/svg' ,'textPath')
+            textPathElm2.setAttributeNS(null, 'href', `#arc1`);
+            textPathElm2.setAttributeNS(null, 'startOffset', '7.5%');
+            textPathElm2.setAttributeNS(null, 'side', 'right');
+            textPathElm2.setAttributeNS(null, 'fill', 'white');
+            textPathElm2.innerHTML = 'ללא ממצאים חשודים'
+            textPathElm2.style.letterSpacing = '2px'
+            textElm2.appendChild(textPathElm2)
+            svgElm.appendChild(textElm1)
+            svgElm.appendChild(textElm2)
             parent.appendChild(svgElm)
+            
+            // let imgElm = document.createElement('img')
+            // imgElm.src = 'assets/images/no_findings-05.png'
+            // imgElm.style.width = svgSize + 'px'
+            // parent.appendChild(imgElm)
         } else {
             let svgElm = document.createElementNS('http://www.w3.org/2000/svg' ,'svg')
             svgElm.setAttributeNS(null, 'width', svgSize);
@@ -427,6 +473,28 @@ function renderGraphs(test, svgSize, radius, parent) {
             parent.appendChild(svgElm)
         }
     })
+}
+
+function getArc1Path(size, radius, flip) {
+    let center = size/2
+    let x1 = center + Math.sin(Math.PI/3)*radius
+    let y1 = center + Math.cos(Math.PI/3)*radius
+    let x2 = center + Math.sin(-Math.PI/3)*radius
+    let y2 = center + Math.cos(-Math.PI/3)*radius
+    let sweep = flip? 1:0
+    let largeArc = flip? 0:1
+    return `M ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} ${sweep} ${x2} ${y2}`
+}
+
+function getArc2Path(size, radius, flip) {
+    let center = size/2
+    let x1 = center + Math.sin(-Math.PI*2/3)*radius
+    let y1 = center + Math.cos(-Math.PI*2/3)*radius
+    let x2 = center + Math.sin(Math.PI*2/3)*radius
+    let y2 = center + Math.cos(Math.PI*2/3)*radius
+    let sweep = flip? 1:0
+    let largeArc = flip? 0:1
+    return `M ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} ${sweep} ${x2} ${y2}`
 }
 
 function pathFromObject(hour, radius) {
