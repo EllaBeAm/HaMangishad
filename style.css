@@ -30,8 +30,9 @@ body {
   color: white;
   direction: rtl;
   font-family: Karantina;
-  background-image: url("assets/images/image\ 38.png");
-  background-size: cover;
+  background-image: url("assets/images/finalfinal\ body.jpg");
+  background-size: 170%;
+  background-position: 44% 102%;
 }
 
 button {
