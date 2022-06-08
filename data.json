@@ -46,7 +46,7 @@
           8
         ],
         "birads": 2,
-        "scan": [
+        "scans": [
           "mri-4.18_section_65"
         ]
       }
@@ -74,7 +74,7 @@
           8
         ],
         "birads": 2,
-        "scan": [
+        "scans": [
           "mri-5.19_section77"
         ]
       }
@@ -101,7 +101,7 @@
           8
         ],
         "birads": 4,
-        "scan": [
+        "scans": [
           "mri-5.20_section78"
         ]
       },
@@ -116,7 +116,7 @@
           11
         ],
         "birads": 4,
-        "scan": [
+        "scans": [
           "mri-5.20_section43"
         ]
       }
@@ -143,7 +143,7 @@
           8
         ],
         "birads": 2,
-        "scan": [
+        "scans": [
           "mri-12.20_section78"
         ]
       },
@@ -158,7 +158,7 @@
           11
         ],
         "birads": 2,
-        "scan": [
+        "scans": [
           "mri-12.20_section43"
         ]
       }
@@ -180,7 +180,7 @@
         "amount": 1,
         "hour": 3,
         "birads": 2,
-        "scan": {}
+        "scans": []
       }
     ]
   },
@@ -200,7 +200,7 @@
         "amount": 1,
         "hour": 3,
         "birads": 1,
-        "scan": ""
+        "scans": []
       }
     ]
   },
@@ -220,7 +220,7 @@
         "amount": 1,
         "hour": 3,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "left",
@@ -230,7 +230,7 @@
         "amount": 1,
         "hour": 1,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "left",
@@ -240,7 +240,7 @@
         "amount": 2,
         "hour": 12,
         "birads": 2,
-        "scan": ""
+        "scans": []
       }
     ]
   },
@@ -264,7 +264,7 @@
         "amount": 1,
         "hour": 3,
         "birads": 1,
-        "scan": [
+        "scans": [
           "US-5.16-left_hour-3_048",
           "US-5.16-left_hour-3_2_092"
         ]
@@ -291,7 +291,7 @@
         "amount": 1,
         "hour": 3,
         "birads": 2,
-        "scan": [
+        "scans": [
           "US-9.16-left_hour-3-1"
         ]
       },
@@ -303,7 +303,7 @@
         "amount": 1,
         "hour": 11,
         "birads": 2,
-        "scan": [
+        "scans": [
           "US-9.16-right_hour-11-1"
         ]
       }
@@ -329,7 +329,7 @@
         "amount": 1,
         "hour": 3,
         "birads": 2,
-        "scan": [
+        "scans": [
           "US-3.17-left_hour-3-1"
         ]
       },
@@ -341,7 +341,7 @@
         "amount": 1,
         "hour": 12,
         "birads": 2,
-        "scan": [
+        "scans": [
           "US-3.17-left_hour-12-1"
         ]
       }
@@ -368,7 +368,7 @@
         "amount": "",
         "hour": "3",
         "birads": 1,
-        "scan": [
+        "scans": [
           "us-10.17_left_hour-3"
         ]
       }
@@ -390,7 +390,7 @@
         "amount": 1,
         "hour": 7,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "right",
@@ -400,7 +400,7 @@
         "amount": 1,
         "hour": 10,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "right",
@@ -410,7 +410,7 @@
         "amount": 1,
         "hour": 10,
         "birads": 2,
-        "scan": ""
+        "scans": []
       }
     ]
   },
@@ -430,7 +430,7 @@
         "amount": 1,
         "hour": 2,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "left",
@@ -440,7 +440,7 @@
         "amount": 1,
         "hour": 3,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "left",
@@ -450,7 +450,7 @@
         "amount": 1,
         "hour": 7,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "right",
@@ -460,7 +460,7 @@
         "amount": 1,
         "hour": 10,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "right",
@@ -470,7 +470,7 @@
         "amount": 1,
         "hour": 10,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "right",
@@ -480,7 +480,7 @@
         "amount": 1,
         "hour": 12,
         "birads": 2,
-        "scan": ""
+        "scans": []
       }
     ]
   },
@@ -500,7 +500,7 @@
         "amount": 1,
         "hour": 2,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "left",
@@ -510,7 +510,7 @@
         "amount": 1,
         "hour": 6,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "left",
@@ -520,7 +520,7 @@
         "amount": 1,
         "hour": 12,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "right",
@@ -530,7 +530,7 @@
         "amount": 1,
         "hour": 10,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "right",
@@ -540,7 +540,7 @@
         "amount": 1,
         "hour": 10,
         "birads": 2,
-        "scan": ""
+        "scans": []
       },
       {
         "side": "right",
@@ -550,7 +550,7 @@
         "amount": 1,
         "hour": 12,
         "birads": 2,
-        "scan": ""
+        "scans": []
       }
     ]
   }
