@@ -199,11 +199,30 @@ function renderScans(test) {
     visualsElm.innerHTML = ''
     let scansWrapperElm = document.createElement('div')
     scansWrapperElm.classList.add('scans-wrapper')
-    let sideFindings = test.findings.filter(finding => finding.side == State.currSide)
+    // let sideFindings = test.findings.filter(finding => finding.side == State.currSide)
+    let sideFindings = test.findings
+    let hasActive = false
     sideFindings.forEach(finding => {
+        finding.scans.forEach((scan, i) => {
         let scanElm = document.createElement('img')
-        scanElm.src = 'assets/images/image 45.png'
+            scanElm.src = 'assets/findings/' + scan + '.png'
         scanElm.classList.add('scan')
+            if (i == 0) {
+                scanElm.classList.add('active')
+                hasActive = true
+            }
+            scanElm.dataset.side = finding.side
+            scansWrapperElm.appendChild(scanElm)
+        })
+    })
+    test.scans.forEach((scan, i) => {
+        let scanElm = document.createElement('img')
+        scanElm.src = 'assets/findings/' + scan + '.png'
+        scanElm.classList.add('scan')
+        if (i == 0 && !hasActive) {
+            scanElm.classList.add('active')
+            hasActive = true
+        }
         scansWrapperElm.appendChild(scanElm)
     })
     visualsElm.appendChild(scansWrapperElm)
