@@ -492,11 +492,17 @@ async function init() {
     // let dateBtnsWrapperElm = document.querySelector(".date-btns-wrapper")
     // dateBtnsWrapperElm.scrollBy(-100, 0);
     data = await fetchData()
+    data.sort((a,b) => stringToTimestamp(a.date) - stringToTimestamp(b.date)) 
     data.forEach((test, i) => {
         test['index'] = i
     });
     renderTabs(data)
     renderContent()
+}
+
+function stringToTimestamp(str) {
+    let parts = str.split('.')
+    return new Date(20+parts[2], parts[1]-1, parts[0])
 }
 
 function fetchData() {
