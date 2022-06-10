@@ -404,6 +404,10 @@ svg text {
   font-size: 28px;
 }
 
+.info svg text {
+  font-size: 9px;
+}
+
 /* ---------- Footer Button ---------- */
 .footer-btns {
   position: absolute;

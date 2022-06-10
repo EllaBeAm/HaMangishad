@@ -339,6 +339,7 @@ function renderTimeGraphs(timeMap, svgSize, radius, parent) {
 
 function renderGraphs(test, svgSize, radius, parent) {
     parent.innerHTML = ''
+    let isInInfo = parent.classList.contains("graphs")
     let sides = ["left", "right"]
     sides.forEach(side=>{
         let findings = test.findings.filter(finding => finding.side == side)
@@ -349,8 +350,10 @@ function renderGraphs(test, svgSize, radius, parent) {
             svgElm.setAttributeNS(null, 'width', svgSize);
             svgElm.setAttributeNS(null, 'height', svgSize);
             let defsElm = document.createElementNS('http://www.w3.org/2000/svg' ,'defs')
+            let size = radius*2/3 - 10
+            if (isInInfo) size += 5
             defsElm.innerHTML = `<path id="arc1" d="${getArc1Path(svgSize, radius, true)}" />
-            <path id="arc2" d="${getArc2Path(svgSize, radius*2/3 - 10, true)}" />`
+            <path id="arc2" d="${getArc2Path(svgSize, size, true)}" />`
             svgElm.appendChild(defsElm)
             let circleElm3 = document.createElementNS('http://www.w3.org/2000/svg' ,'circle')
             circleElm3.setAttributeNS(null, 'cx', radius);
@@ -388,18 +391,22 @@ function renderGraphs(test, svgSize, radius, parent) {
             let textElm1 = document.createElementNS('http://www.w3.org/2000/svg' ,'text')
             let textPathElm1 = document.createElementNS('http://www.w3.org/2000/svg' ,'textPath')
             textPathElm1.setAttributeNS(null, 'href', `#arc2`);
-            textPathElm1.setAttributeNS(null, 'startOffset', '12.5%');
+            let textPath1Offset = '12.5%'
+            // if (isInInfo) textPath1Offset = '0%'
+            textPathElm1.setAttributeNS(null, 'startOffset',textPath1Offset);
             textPathElm1.setAttributeNS(null, 'fill', 'white');
             textPathElm1.innerHTML = 'בדיקה תקינה'
             textElm1.appendChild(textPathElm1)
             let textElm2 = document.createElementNS('http://www.w3.org/2000/svg' ,'text')
             let textPathElm2 = document.createElementNS('http://www.w3.org/2000/svg' ,'textPath')
             textPathElm2.setAttributeNS(null, 'href', `#arc1`);
-            textPathElm2.setAttributeNS(null, 'startOffset', '7.5%');
+            let textPath2Offset = '7.5%'
+            if (isInInfo) textPath2Offset = '5%'
+            textPathElm2.setAttributeNS(null, 'startOffset', textPath2Offset);
             textPathElm2.setAttributeNS(null, 'side', 'right');
             textPathElm2.setAttributeNS(null, 'fill', 'white');
             textPathElm2.innerHTML = 'ללא ממצאים חשודים'
-            textPathElm2.style.letterSpacing = '2px'
+            textPathElm2.style.letterSpacing = isInInfo? '1px':'2px'
             textElm2.appendChild(textPathElm2)
             svgElm.appendChild(textElm1)
             svgElm.appendChild(textElm2)
