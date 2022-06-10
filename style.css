@@ -398,10 +398,17 @@ input[type="range"]:active::-webkit-slider-thumb{
   grid-area: active;
 }
 
+svg {
+  overflow: visible;
+}
+
 svg text {
   direction: ltr;
   color: white;
   font-size: 28px;
+}
+svg text.finding {
+  font-size: 12px;
 }
 
 .info svg text {
