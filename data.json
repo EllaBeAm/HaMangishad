@@ -6,8 +6,6 @@
     "subtitle": "ללא ממצאים חשודים",
     "instructions": "המשך מעקב שגרתי בהתאם לרמת הסיכון",
     "scans": [
-      "MRI-04.17-1.png",
-      "MRI-04.17-2.png"
     ],
     "findings": []
   },
@@ -18,9 +16,9 @@
     "subtitle": "ללא ממצאים חשודים",
     "instructions": "ביקורת חוזרת בעוד שנה",
     "scans": [
-      "mri-4.17_general",
-      "mri-4.17_general1",
-      "mri-4.17_general2"
+      "mri-04.17_general_z",
+      "mri-04.17_general_y",
+      "mri-04.17_general_x"
     ],
     "findings": []
   },
@@ -31,13 +29,15 @@
     "subtitle": "שאינו ממאיר",
     "instructions": "המשך מעקב שגרתי",
     "scans": [
-      "mri-4.18_general",
-      "mri-4.18_general1"
+      "mri-04.18_general_x",
+      "mri-04.18_general_z"
     ],
     "findings": [
       {
         "side": "right",
         "type": "lump",
+        "title":"גוש, קוטר 1.2 ס''מ",
+        "description": " צורה אובלית, ללא שינוי מהותי מהבדיקה ב- 04/2017",
         "distance": "",
         "size": "1.2",
         "amount": 1,
@@ -59,13 +59,15 @@
     "subtitle": "שאינו ממאיר",
     "instructions": "המשך מעקב שגרתי",
     "scans": [
-      "mri-5.19_general",
-      "mri-5.19_general1"
+      "mri-05.19_general_y",
+      "mri-05.19_general_z"
     ],
     "findings": [
       {
         "side": "right",
         "type": "lump",
+        "title":"גוש, קוטר 1.2 ס''מ",
+        "description": "גוש אובלי, ללא שינוי מהותי מהבדיקה ב- 04/2018",
         "distance": "",
         "size": "1.2",
         "amount": 1,
@@ -87,12 +89,14 @@
     "subtitle": "חשד בינוני לממאירות",
     "instructions": "ביופסיה אולטראסונד. במידה ולא יאותר באולטראסונד - ביופסיה MRI",
     "scans": [
-      "mri-5.20_general"
+      "mri-05.20_general_y"
     ],
     "findings": [
       {
         "side": "right",
         "type": "lump",
+        "title": "גוש, קוטר 0.8 ס''מ",
+        "description": "מוקדי האדרה חדשים וחשודים - קליטה מוגברת של חומר הניגוד",
         "distance": "",
         "size": "0.8",
         "amount": 1,
@@ -108,6 +112,8 @@
       {
         "side": "right",
         "type": "lump",
+        "title":"גוש, קוטר 1.4 ס''מ",
+        "description": "מוקדי האדרה חדשים וחשודים - קליטה מוגברת של חומר הניגוד",
         "distance": "",
         "size": "1.4",
         "amount": 1,
@@ -129,14 +135,16 @@
     "subtitle": "שאינו ממאיר",
     "instructions": "ביקורת MRI בעוד שנה",
     "scans": [
-      "mri-12.20_general"
+      "mri-12.20_general_x"
     ],
     "findings": [
       {
         "side": "right",
         "type": "lump",
+        "title":"גוש, קוטר 0.8 ס''מ",
+        "description": "ללא שינוי בהשוואה לבדיקה ב-05/2020",
         "distance": "",
-        "size": "",
+        "size": "0.8",
         "amount": "",
         "hour": [
           7,
@@ -150,8 +158,10 @@
       {
         "side": "right",
         "type": "lump",
+        "title":"גוש, קוטר 1.4 ס''מ",
+        "description": "מיקום הביופסיה, בולט פחות בהשוואה לבדיקה ב-05/2020",
         "distance": "",
-        "size": "",
+        "size": "1.4",
         "amount": "",
         "hour": [
           10,
@@ -175,6 +185,7 @@
       {
         "side": "left",
         "type": "lump",
+        "title":"גוש ,קוטר 1 ס''מ",
         "distance": "5",
         "size": "1",
         "amount": 1,
@@ -195,6 +206,8 @@
       {
         "side": "left",
         "type": "lump",
+        "title":"גוש, קוטר 1 ס''מ",
+        "description": "נראה היום כחלק מרקמת השד",
         "distance": "5",
         "size": "1",
         "amount": 1,
@@ -215,6 +228,8 @@
       {
         "side": "left",
         "type": "lump",
+        "title":"גוש, קוטר 1 ס''מ",
+        "description": "ללא שינוי מהותי מבדיקה קודמת, נראה כחלק מרקמת השד",
         "distance": "5",
         "size": "0.8",
         "amount": 1,
@@ -225,6 +240,8 @@
       {
         "side": "left",
         "type": "cyst",
+        "title":"ציסטה, 0.5 ס''מ",
+        "description": "ציסטה פשוטה, קרובה למרכז",
         "distance": "1",
         "size": "0.5",
         "amount": 1,
@@ -235,6 +252,8 @@
       {
         "side": "left",
         "type": "cyst",
+        "title":"שתי ציסטות, 0.75 ס''מ",
+        "description": "שתי ציסטות פשוטות",  
         "distance": "1",
         "size": "0.75",
         "amount": 2,
@@ -251,14 +270,16 @@
     "subtitle": "ללא ממצאים חדשים",
     "instructions": "אנא חזרי אל הרופאה להמשך מעקב",
     "scans": [
-      "US-5.16-left_general",
-      "US-5.16-general-1",
-      "US-5.16-left_general-2"
+      "US-05.16-general",
+      "US-05.16-general_left_1",
+      "US-05.16-general_left_2"
     ],
     "findings": [
       {
         "side": "left",
         "type": "lump",
+        "title":"גוש, קוטר 0.9 ס''מ",
+        "description": "נראה כחלק מרקמת השד",
         "distance": "5",
         "size": "0.9",
         "amount": 1,
@@ -278,14 +299,16 @@
     "subtitle": "שאינו ממאיר",
     "instructions": "המשך בירור לפי שיקול קליני",
     "scans": [
-      "US-9.16-left_general-1",
-      "US-9.16-right_general-1",
-      "US-9.16-right_general-2"
+      "US-09.16-general_left_1",
+      "US-09.16-general_right_1",
+      "US-09.16-general_right_2"
     ],
     "findings": [
       {
         "side": "left",
         "type": "lump",
+        "title": "גוש, קוטר 0.9 ס''מ",
+        "description": "ללא שינוי",
         "distance": "5",
         "size": "0.9",
         "amount": 1,
@@ -298,6 +321,8 @@
       {
         "side": "right",
         "type": "cyst",
+        "title":"ציסטה, 0.4 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.4",
         "amount": 1,
@@ -324,6 +349,8 @@
       {
         "side": "left",
         "type": "lump",
+        "title":"גוש, קוטר 0.9 ס''מ",
+        "description": "ללא שינוי מבדיקה קודמת",
         "distance": "5",
         "size": "0.9",
         "amount": 1,
@@ -336,6 +363,8 @@
       {
         "side": "left",
         "type": "cyst",
+        "title":"ציסטה, 0.6 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "1",
         "size": "0.6",
         "amount": 1,
@@ -354,17 +383,19 @@
     "subtitle": "ללא ממצאים חשודים",
     "instructions": "המשך מעקב שגרתי",
     "scans": [
-      "us-10.17_left_general",
-      "us-10.17_left_general1",
-      "us-10.17_left_general2",
-      "us-10.17_left_general3"
+      "US-10.17-general_left_1",
+      "US-10.17-general_left_2",
+      "US-10.17-general_left_3",
+      "US-10.17-general_left_4"
     ],
     "findings": [
       {
         "side": "left",
         "type": "lump",
+        "title":"גוש, קוטר 0.9 ס''מ",
+        "description": "נראה פחות בולט ומתמזג עם הרקמה שמסביב",
         "distance": "",
-        "size": "",
+        "size": "0.9",
         "amount": "",
         "hour": "3",
         "birads": 1,
@@ -385,6 +416,8 @@
       {
         "side": "left",
         "type": "cyst",
+        "title":"ציסטה, 0.6 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.6",
         "amount": 1,
@@ -395,6 +428,8 @@
       {
         "side": "right",
         "type": "cyst",
+        "title":"ציסטה, 0.4 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.4",
         "amount": 1,
@@ -405,6 +440,8 @@
       {
         "side": "right",
         "type": "cyst",
+        "title":"ציסטה, 0.8 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.8",
         "amount": 1,
@@ -425,62 +462,74 @@
       {
         "side": "left",
         "type": "cyst",
+        "title":"ציסטה, 0.6 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.6",
         "amount": 1,
         "hour": 2,
         "birads": 2,
-        "scans": []
+        "scans": ["us-12.18_left_hour-2"]
       },
       {
         "side": "left",
         "type": "cyst",
+        "title":"ציסטה, 0.7 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.7",
         "amount": 1,
         "hour": 3,
         "birads": 2,
-        "scans": []
+        "scans": ["us-12.18_left_hour-3"]
       },
       {
         "side": "left",
         "type": "cyst",
+        "title":"ציסטה, 0.6 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.6",
         "amount": 1,
         "hour": 7,
         "birads": 2,
-        "scans": []
+        "scans": ["us-12.18_left_hour-7"]
       },
       {
         "side": "right",
         "type": "cyst",
+        "title":"ציסטה, 0.7 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.7",
         "amount": 1,
         "hour": 10,
         "birads": 2,
-        "scans": []
+        "scans": ["us-12.18_right_hour-10"]
       },
       {
         "side": "right",
         "type": "cyst",
+        "title":"ציסטה, 0.5 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.5",
         "amount": 1,
         "hour": 10,
         "birads": 2,
-        "scans": []
+        "scans": ["us-12.18_right_hour-10"]
       },
       {
         "side": "right",
         "type": "cyst",
+        "title":"ציסטה, 0.5 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.5",
         "amount": 1,
         "hour": 12,
         "birads": 2,
-        "scans": []
+        "scans": ["us-12.18_right_hour-10"]
       }
     ]
   },
@@ -495,62 +544,74 @@
       {
         "side": "left",
         "type": "cyst",
+        "title":"ציסטה, 0.6 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.6",
         "amount": 1,
         "hour": 2,
         "birads": 2,
-        "scans": []
+        "scans": ["us_2019_12_25_left_hour_2"]
       },
       {
         "side": "left",
         "type": "cyst",
+        "title":"ציסטה, 1.1 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "1.1",
         "amount": 1,
         "hour": 6,
         "birads": 2,
-        "scans": []
+        "scans": ["us_2019_12_25_left_hour_6"]
       },
       {
         "side": "left",
         "type": "cyst",
+        "title":"ציסטה, 0.6 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.6",
         "amount": 1,
         "hour": 12,
         "birads": 2,
-        "scans": []
+        "scans": ["us_2019_12_25_left_hour_12"]
       },
       {
         "side": "right",
         "type": "cyst",
+        "title":"ציסטה, 0.6 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.6",
         "amount": 1,
         "hour": 10,
         "birads": 2,
-        "scans": []
+        "scans": ["us_2019_12_25_right_hour_10"]
       },
       {
         "side": "right",
         "type": "cyst",
+        "title":"ציסטה, 0.7 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.7",
         "amount": 1,
         "hour": 10,
         "birads": 2,
-        "scans": []
+        "scans": ["us_2019_12_25_right_hour_10"]
       },
       {
         "side": "right",
         "type": "cyst",
+        "title":"ציסטה, 0.6 ס''מ",
+        "description": "בית שחי תקין",
         "distance": "",
         "size": "0.6",
         "amount": 1,
         "hour": 12,
         "birads": 2,
-        "scans": []
+        "scans": ["us_2019_12_25_right_hour_12"]
       }
     ]
   }
