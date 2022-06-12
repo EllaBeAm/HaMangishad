@@ -2,7 +2,8 @@ const State = {
     testsType: 'All',
     currTestIndex: 0,
     currSection: 0,
-    currSide: 'left'
+    currSide: 'left',
+    selectedHour: 0
 }
 let data
 
@@ -85,14 +86,17 @@ function renderContent() {
     let test = getCurrentTest()
     let doRenderInstructions = State.currSection==0
     renderInfo(test, doRenderInstructions)
-    if (test.type == 'US') renderGraphsManager(test)
+    renderGraphsManager(test)
     if (State.currSection == 1) renderScans(test)
-    else if (State.currSection == 2) renderRangeSlider()
+    else if (State.currSection == 2) renderRangeSlider(!State.selectedHour)
 }
 
-function renderRangeSlider() {
+function renderRangeSlider(isInInfo) {
+    if (document.querySelector('.slider-wrapper input')) return
     let allYears = [...new Set(data.map(test=>stringToYear(test.date)).sort())]
-    let infoElm = document.querySelector('.content .info')
+    let parent
+    if (isInInfo) parent = document.querySelector('.content .info')
+    else parent = document.querySelector('.content .visuals')
     let yearsWrapper = document.createElement('div')
     yearsWrapper.classList.add('years-wrapper')
     let yearsTitle = document.createElement('h3')
@@ -127,29 +131,31 @@ function renderRangeSlider() {
     sliderWrapper.appendChild(sliderOneElm)
     sliderWrapper.appendChild(sliderTwoElm)
     yearsWrapper.appendChild(sliderWrapper)
-    infoElm.appendChild(yearsWrapper)
-    let legendElm = document.createElement('div')
-    let keysMap = [
-        {text: 'ממצא יחיד', color:'#FBB040'},
-        {text: 'ממצא שחזר בשתי בדיקות', color:'#F8893D'},
-        {text: 'ממצא שחזר בשלוש בדיקות', color:'#F56239'},
-        {text: 'ממצא שחזר בארבע בדיקות ומעלה', color:'#F23B36'},
-    ]
-    legendElm.classList.add('legend')
-    for (let i=0; i<4; i++) {
-        let keyWrapperElm = document.createElement('div')
-        keyWrapperElm.classList.add('key')
-        let circleElm = document.createElement('div')
-        circleElm.classList.add('circle')
-        circleElm.style.backgroundColor = keysMap[i].color
-        let descElm = document.createElement('p')
-        descElm.classList.add('desc')
-        descElm.innerText = keysMap[i].text
-        keyWrapperElm.appendChild(circleElm)
-        keyWrapperElm.appendChild(descElm)
-        legendElm.appendChild(keyWrapperElm)
+    parent.appendChild(yearsWrapper)
+    if (isInInfo) {
+        let legendElm = document.createElement('div')
+        let keysMap = [
+            {text: 'ממצא יחיד', color:'#FBB040'},
+            {text: 'ממצא שחזר בשתי בדיקות', color:'#F8893D'},
+            {text: 'ממצא שחזר בשלוש בדיקות', color:'#F56239'},
+            {text: 'ממצא שחזר בארבע בדיקות ומעלה', color:'#F23B36'},
+        ]
+        legendElm.classList.add('legend')
+        for (let i=0; i<4; i++) {
+            let keyWrapperElm = document.createElement('div')
+            keyWrapperElm.classList.add('key')
+            let circleElm = document.createElement('div')
+            circleElm.classList.add('circle')
+            circleElm.style.backgroundColor = keysMap[i].color
+            let descElm = document.createElement('p')
+            descElm.classList.add('desc')
+            descElm.innerText = keysMap[i].text
+            keyWrapperElm.appendChild(circleElm)
+            keyWrapperElm.appendChild(descElm)
+            legendElm.appendChild(keyWrapperElm)
+        }
+        parent.appendChild(legendElm)
     }
-    infoElm.appendChild(legendElm)
     styleSlider();
 }
 
@@ -252,7 +258,13 @@ function renderGraphsManager() {
             parent.appendChild(wrapper)
         })
     } else {
-        let parent = document.querySelector('.content .visuals')
+        let parent
+        if (State.selectedHour) {
+            parent = document.querySelector('.content .visuals .svg-wrapper')
+        } else {
+            parent = document.querySelector('.content .visuals')
+        }
+
         let timeMap = getTimeMap()
         console.log(timeMap);
         renderTimeGraphs(timeMap, 311, 155, parent)
@@ -291,7 +303,12 @@ function stringToYear(str) {
 
 function renderTimeGraphs(timeMap, svgSize, radius, parent) {
     parent.innerHTML = ''
+    parent.classList.add('time-graphs')
+    let svgWrapper = document.createElement('div')
+    svgWrapper.classList.add('svg-wrapper')
+    parent.appendChild(svgWrapper)
     let sides = ["left", "right"]
+    let center = svgSize/2
     sides.forEach(side=>{
         let svgElm = document.createElementNS('http://www.w3.org/2000/svg' ,'svg')
         svgElm.setAttributeNS(null, 'width', svgSize);
@@ -302,7 +319,7 @@ function renderTimeGraphs(timeMap, svgSize, radius, parent) {
         circleElm1.setAttributeNS(null, 'cx', radius);
         circleElm1.setAttributeNS(null, 'cy', radius);
         circleElm1.setAttributeNS(null, 'r', radius);
-        circleElm1.setAttributeNS(null, 'fill', 'transparent');
+        circleElm1.setAttributeNS(null, 'fill', 'none');
         circleElm1.setAttributeNS(null, 'stroke', 'white');
         circleElm1.setAttributeNS(null, 'stroke-dasharray', '4 4');
         let circleElm2 = circleElm1.cloneNode()
@@ -313,13 +330,17 @@ function renderTimeGraphs(timeMap, svgSize, radius, parent) {
         let hours = timeMap[side]
         for (let hour in hours) {
             let chunckElm = document.createElementNS("http://www.w3.org/2000/svg", "path")
-            let d = pathFromObject(hour, radius)
+            let d = pathFromObject(hour, center, radius)
             chunckElm.setAttributeNS(null, "d", d);
             let color
             if (hours[hour] == 1) color='#FBB040'
             else if (hours[hour] == 2) color='#F8893D'
             else if (hours[hour] == 3) color='#F56239'
             else if (hours[hour] >= 4) color='#F23B36'
+            if (side == State.currSide && hour == State.selectedHour) chunckElm.classList.add('selected')
+            chunckElm.onclick = selectedTimeHour
+            chunckElm.dataset.side = side
+            chunckElm.dataset.hour = hour
             chunckElm.setAttributeNS(null, 'fill', color);
             chunckElm.setAttributeNS(null, 'stroke',color);
             svgElm.append(chunckElm)
@@ -333,12 +354,20 @@ function renderTimeGraphs(timeMap, svgSize, radius, parent) {
         svgElm.append(circleElm2)
         svgElm.append(circleElm3)
         
-        parent.appendChild(svgElm)
+        svgWrapper.appendChild(svgElm)
     })
 }
 
+function selectedTimeHour(e) {
+    State.selectedHour = e.target.dataset.hour
+    State.currSide = e.target.dataset.side
+    renderContent()
+}
+             
+
 function renderGraphs(test, svgSize, radius, parent) {
     parent.innerHTML = ''
+    parent.classList.remove('time-graphs')
     let isInInfo = parent.classList.contains("graphs")
     let center = svgSize/2
     let sides = ["left", "right"]
@@ -350,14 +379,14 @@ function renderGraphs(test, svgSize, radius, parent) {
             svgElm.setAttributeNS(null, 'height', svgSize);
             let defsElm = document.createElementNS('http://www.w3.org/2000/svg' ,'defs')
             let size = radius*2/3 - 10
-            if (isInInfo) size += 5
+            if (isInInfo) size += 6
             defsElm.innerHTML = `<path id="arc1" d="${getArc1Path(svgSize, radius, true)}" />
             <path id="arc2" d="${getArc2Path(svgSize, size, true)}" />`
             svgElm.appendChild(defsElm)
             let circleElm3 = document.createElementNS('http://www.w3.org/2000/svg' ,'circle')
             circleElm3.setAttributeNS(null, 'cx', center);
             circleElm3.setAttributeNS(null, 'cy', center);
-            circleElm3.setAttributeNS(null, 'fill', 'transparent');
+            circleElm3.setAttributeNS(null, 'fill', 'none');
             circleElm3.setAttributeNS(null, 'stroke', 'white');
             circleElm3.setAttributeNS(null, 'stroke-dasharray', '4 4');
             let arc1 = document.createElementNS('http://www.w3.org/2000/svg' ,'path')
@@ -376,6 +405,7 @@ function renderGraphs(test, svgSize, radius, parent) {
             let textPathElm1 = document.createElementNS('http://www.w3.org/2000/svg' ,'textPath')
             textPathElm1.setAttributeNS(null, 'href', `#arc2`);
             let textPath1Offset = '12.5%'
+            if (isInInfo) textPath1Offset = '11%'
             textPathElm1.setAttributeNS(null, 'startOffset',textPath1Offset);
             textPathElm1.setAttributeNS(null, 'fill', 'white');
             textPathElm1.innerHTML = 'בדיקה תקינה'
@@ -426,7 +456,7 @@ function renderGraphs(test, svgSize, radius, parent) {
             circleElm1.setAttributeNS(null, 'cx', center);
             circleElm1.setAttributeNS(null, 'cy', center);
             circleElm1.setAttributeNS(null, 'r', radius);
-            circleElm1.setAttributeNS(null, 'fill', 'transparent');
+            circleElm1.setAttributeNS(null, 'fill', 'none');
             circleElm1.setAttributeNS(null, 'stroke', 'white');
             let circleElm2 = circleElm1.cloneNode()
             circleElm2.setAttributeNS(null, 'fill', 'none');
@@ -461,7 +491,7 @@ function renderGraphs(test, svgSize, radius, parent) {
                 let lineD = `M ${lineX1} ${lineY1} L ${lineX2} ${lineY2} h ${lineH}`
                 lineElm.setAttributeNS(null, "d", lineD);
                 lineElm.setAttributeNS(null, 'stroke', 'white');
-                lineElm.setAttributeNS(null, 'fill', 'transparent');
+                lineElm.setAttributeNS(null, 'fill', 'none');
                 lineElm.setAttributeNS(null, 'stroke-dasharray', '4 4');
                 let textElm = document.createElementNS("http://www.w3.org/2000/svg", "text")
                 let textX = lineX2 + 5
@@ -478,7 +508,7 @@ function renderGraphs(test, svgSize, radius, parent) {
                     let tagY = textY - 20
                     let tagElm = document.createElementNS("http://www.w3.org/2000/svg", "use")
                     let hrefTag = area.type=='lump'?'#lump-tag':'cyst-tag'
-                    tagElm.setAttributeNS(null, 'href', '#cyst-tag');
+                    tagElm.setAttributeNS(null, 'href', hrefTag);
                     tagElm.setAttributeNS(null, 'x', tagX);
                     tagElm.setAttributeNS(null, 'y', tagY);
                     svgElm.append(tagElm)
@@ -583,12 +613,49 @@ function renderInfo(test, doRenderInstructions) {
         createAppendTextElm('h1', 'הנחיות', infoElm)
         createAppendTextElm('h2', test.instructions, infoElm)
     } else if (State.currSection == 2)  {
-        createAppendTextElm('h3', '>> בחרי אזור כדי לצפות ברשימת הבדיקות בהן חופיע', infoElm)
+        if (State.selectedHour) {
+            addHourList(infoElm)
+        } else {
+            createAppendTextElm('h3', '>> בחרי אזור כדי לצפות ברשימת הבדיקות בהן הופיע', infoElm)
+        }
     } else {
         let graphsElm = document.createElement('div')
         graphsElm.classList.add('graphs')
         infoElm.appendChild(graphsElm)
     }
+}
+
+function addHourList(parent) {
+    let findings = getFindingsBySideAndHour(State.currSide, State.selectedHour)
+    console.log(findings);
+    let findingsWrapper = document.createElement('div')
+    findingsWrapper.classList.add('findings-list')
+    parent.appendChild(findingsWrapper)
+    findings.forEach(finding => {
+        let findingElm = document.createElement('div')
+        findingElm.classList.add('finding')
+        findingElm.innerText = finding.testType + ' ' + finding.date
+        findingElm.dataset.birads = finding.birads
+        findingsWrapper.appendChild(findingElm)
+    })
+}
+
+function getFindingsBySideAndHour(side, hour) {
+    let findings = []
+    data.forEach(test => {
+        test.findings.forEach(finding => {
+            if (finding.side != side) return
+            if (!Array.isArray(finding.hour)) finding.hour=[finding.hour]
+            finding.hour.forEach(finHour => {
+                if (finHour == hour) {
+                    finding.date = test.date
+                    finding.testType = test.type
+                    findings.push(finding)
+                }
+            })
+        })
+    })
+    return findings
 }
 
 function renderTabs() {
