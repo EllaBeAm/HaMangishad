@@ -176,27 +176,6 @@
   },
   {
     "type": "US",
-    "date": "24.08.14",
-    "title": "ממצא שפיר*",
-    "subtitle": "שאינו ממאיר",
-    "instructions": "בדיקת אולטראסאונד חוזרת בעוד 6 חודשים",
-    "scans": [],
-    "findings": [
-      {
-        "side": "left",
-        "type": "lump",
-        "title":"גוש ,קוטר 1 ס''מ",
-        "distance": "5",
-        "size": "1",
-        "amount": 1,
-        "hour": 3,
-        "birads": 2,
-        "scans": []
-      }
-    ]
-  },
-  {
-    "type": "US",
     "date": "08.03.15",
     "title": "בדיקה תקינה",
     "subtitle": "ללא ממצאים חשודים",
