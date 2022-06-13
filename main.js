@@ -416,7 +416,7 @@ function renderGraphs(test, svgSize, radius, parent) {
             let textPath2Offset = '7.5%'
             if (isInInfo) textPath2Offset = '5%'
             textPathElm2.setAttributeNS(null, 'startOffset', textPath2Offset);
-            textPathElm2.setAttributeNS(null, 'side', 'right');
+            textPathElm2.setAttributeNS(null, 'side', 'left');
             textPathElm2.setAttributeNS(null, 'fill', 'white');
             textPathElm2.innerHTML = 'ללא ממצאים חשודים'
             textPathElm2.style.letterSpacing = isInInfo? '1px':'2px'
