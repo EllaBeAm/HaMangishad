@@ -32,7 +32,7 @@ body {
   font-family: Karantina;
   background-image: url("assets/images/finalfinal\ body.jpg");
   background-size: 170%;
-  background-position: 44% 102%;
+  background-position: 44% 100%;
 }
 
 button {
@@ -51,7 +51,7 @@ button[disabled] {
 
 header {
   position: fixed;
-  top: 0;
+  top: 65px;
   border-bottom: 2px solid white;
   height: 50px;
   width: 100%;
@@ -155,7 +155,7 @@ button.shift-date-btn {
 nav.section-navbar {
   position: fixed;
   right: 0;
-  top: 170px;
+  top: 450px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -178,7 +178,7 @@ button.section-btn.active {
 
 /* ---------- Content ---------- */
 .content {
-  margin: 10% 10% 0 10%;
+  margin: 20% 10% 0 10%;
   font-family: Heebo;
   display: flex;
 }
@@ -198,6 +198,11 @@ h1 {
   font-size: 85px;
   margin-top: -16px;
   letter-spacing: 4px;
+  font-weight: 500;
+}
+
+h1.instructions-header {
+  margin-top: 90px;
 }
 
 h2 {
@@ -236,6 +241,11 @@ h3 {
   text-shadow:1px 0px 0px #2D2C7D;
   color: #2D2C7D;
   background-color: white;
+}
+
+.graphs .side-wrapper button.not-btn{
+  border: none;
+  cursor: default;
 }
 
 .findings-list {
@@ -297,6 +307,7 @@ h3 {
   display: flex;
   align-items: center;
   gap: 15px;
+  max-width: 340px;
   margin-left: 30px;
 }
 
@@ -404,6 +415,8 @@ input[type="range"]:active::-webkit-slider-thumb{
   justify-content: space-between;
   align-items: baseline;
   margin-left: 30px;
+  font-size: 14px;
+  max-width: 380px;
 }
 
 .legend .key {
@@ -419,7 +432,7 @@ input[type="range"]:active::-webkit-slider-thumb{
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid white;
+  /* border: 2px solid white; */
 } 
 
 /* ---------- Visuals ---------- */
@@ -440,18 +453,28 @@ input[type="range"]:active::-webkit-slider-thumb{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 1fr);
+  gap: 30px;
+  padding-right: 20px;
+  aspect-ratio: 2.14/1;
+}
+
+.visuals .scans-wrapper[data-type="US"] {
   grid-template-areas: 
   "active active ... ... "
   "active active ... ... ";
-  gap: 30px;
-  padding-right: 20px;
+}
+
+.visuals .scans-wrapper[data-type="MRI"] {
+  grid-template-areas: 
+  "active active active ... "
+  "active active active ... ";
 }
 
 .scans-wrapper .scan {
   border: 2px solid white;
   border-radius: 5px;
   aspect-ratio: 1/1;
-  /* min-width: 25%; */
+  min-width: 25%;
   max-width: 100%;
   height: 100%;
   object-fit: cover;
@@ -461,9 +484,14 @@ input[type="range"]:active::-webkit-slider-thumb{
   grid-area: active;
 }
 
+.visuals .scans-wrapper[data-type="MRI"] .active {
+  height: auto;
+}
+
 .svg-wrapper {
   display: flex;
   gap: 30px;
+  justify-content: space-between;
 }
 
 svg {

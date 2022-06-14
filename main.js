@@ -43,8 +43,12 @@ function makeBtnActive(e, className) {
     selectedBtn.classList.add("active")
 }
 
+let forbidScroll = false
 function shiftDateBtns(dir) {
+    if (forbidScroll) return
+    let dateBtnsWrapperElm = document.querySelector(".date-btns-wrapper")
     let leftScrollDistance = 0
+    // let roundOffset = dateBtnsWrapperElm.scrollLeft-(Math.round(dateBtnsWrapperElm.scrollLeft/100)*100)
     switch (dir) {
         case "right":
             leftScrollDistance = 100
@@ -53,12 +57,13 @@ function shiftDateBtns(dir) {
             leftScrollDistance = -100
             break
     }
-    let dateBtnsWrapperElm = document.querySelector(".date-btns-wrapper")
     dateBtnsWrapperElm.scrollBy({
         top: 0,
         left: leftScrollDistance,
         behavior: 'smooth'
     });
+    forbidScroll = true
+    setTimeout(_=>forbidScroll=false, 500);
 }
 
 function getFilteredTests() {
@@ -76,9 +81,10 @@ let typeToHeaderTextMap = {
     MAMM: 'ממוגרפיה'
 }
 
-function createAppendTextElm(type, text, parent) {
+function createAppendTextElm(type, text, parent, className) {
     let textElm = document.createElement(type)
     textElm.innerText = text
+        if (className) textElm.classList.add(className)
     parent.appendChild(textElm)
 }
 
@@ -136,9 +142,9 @@ function renderRangeSlider(isInInfo) {
         let legendElm = document.createElement('div')
         let keysMap = [
             {text: 'ממצא יחיד', color:'#FBB040'},
-            {text: 'ממצא שחזר בשתי בדיקות', color:'#F8893D'},
-            {text: 'ממצא שחזר בשלוש בדיקות', color:'#F56239'},
-            {text: 'ממצא שחזר בארבע בדיקות ומעלה', color:'#F23B36'},
+            {text: '2 בדיקות', color:'#F8893D'},
+            {text: '3 בדיקות', color:'#F56239'},
+            {text: '4 בדיקות ומעלה', color:'#F23B36'},
         ]
         legendElm.classList.add('legend')
         for (let i=0; i<4; i++) {
@@ -205,23 +211,28 @@ function renderScans(test) {
     visualsElm.innerHTML = ''
     let scansWrapperElm = document.createElement('div')
     scansWrapperElm.classList.add('scans-wrapper')
+    scansWrapperElm.dataset.type = test.type
     // let sideFindings = test.findings.filter(finding => finding.side == State.currSide)
     let sideFindings = test.findings
     let hasActive = false
+    let counter = 0
     sideFindings.forEach(finding => {
         finding.scans.forEach((scan, i) => {
+            if ((test.type == 'US' && counter>=5) || (test.type == 'MRI' && counter>o3)) return
             let scanElm = document.createElement('img')
             scanElm.src = 'assets/findings/' + scan + '.png'
             scanElm.classList.add('scan')
-            if (i == 0) {
+            if (i == 0 && !hasActive) {
                 scanElm.classList.add('active')
                 hasActive = true
             }
             scanElm.dataset.side = finding.side
             scansWrapperElm.appendChild(scanElm)
+            counter++
         })
     })
     test.scans.forEach((scan, i) => {
+        if ((test.type == 'US' && counter>5) || (test.type == 'MRI' && counter>3)) return
         let scanElm = document.createElement('img')
         scanElm.src = 'assets/findings/' + scan + '.png'
         scanElm.classList.add('scan')
@@ -230,6 +241,7 @@ function renderScans(test) {
             hasActive = true
         }
         scansWrapperElm.appendChild(scanElm)
+        counter++
     })
     visualsElm.appendChild(scansWrapperElm)
 }
@@ -238,7 +250,7 @@ function renderGraphsManager() {
     let test = getCurrentTest()
     if (State.currSection == 0) {
         let parent = document.querySelector('.content .visuals')
-        renderGraphs(test, 320, 155, parent)
+        renderGraphs(test, 320, 180, parent)
     }
     else if (State.currSection == 1) {
         let parent = document.querySelector('.content .info .graphs')
@@ -251,9 +263,13 @@ function renderGraphsManager() {
             wrapper.dataset['side'] = side
             wrapper.appendChild(elm)
             let btnElm = document.createElement('button')
-            if (State.currSide == side) btnElm.classList.add('active')
             btnElm.innerText = side=='right'? 'ימין':'שמאל'
-            btnElm.onclick = selectedSide
+            if (test.type == 'MRI') {
+                btnElm.classList.add('not-btn')
+            } else {
+                if (State.currSide == side) btnElm.classList.add('active')
+                btnElm.onclick = selectedSide
+            }
             wrapper.appendChild(btnElm)
             parent.appendChild(wrapper)
         })
@@ -267,7 +283,7 @@ function renderGraphsManager() {
 
         let timeMap = getTimeMap()
         console.log(timeMap);
-        renderTimeGraphs(timeMap, 311, 155, parent)
+        renderTimeGraphs(timeMap, 311, 180, parent)
     }
 }
 
@@ -480,14 +496,17 @@ function renderGraphs(test, svgSize, radius, parent) {
                 if (isInInfo) continue
                 let lineElm = document.createElementNS("http://www.w3.org/2000/svg", "path")
                 let lineRadius = radius
-                let angle = (Math.PI/12)*((-area.hour*2)+13)
+                let firstHour
+                if (Array.isArray(area.hour)) firstHour=area.hour[0]
+                else firstHour=area.hour
+                let angle = (Math.PI/12)*((-firstHour*2)+13)
                 let length = 40
                 let lineX1 = center + Math.sin(angle)*lineRadius
                 let lineY1 = center + Math.cos(angle)*lineRadius
                 let lineX2 = center + Math.sin(angle)*(lineRadius+length)
                 let lineY2 = center + Math.cos(angle)*(lineRadius+length)
                 let lineH = 90
-                if (area.hour >= 7) lineH *= -1
+                if (firstHour >= 7) lineH *= -1
                 let lineD = `M ${lineX1} ${lineY1} L ${lineX2} ${lineY2} h ${lineH}`
                 lineElm.setAttributeNS(null, "d", lineD);
                 lineElm.setAttributeNS(null, 'stroke', 'white');
@@ -496,7 +515,7 @@ function renderGraphs(test, svgSize, radius, parent) {
                 let textElm = document.createElementNS("http://www.w3.org/2000/svg", "text")
                 let textX = lineX2 + 5
                 let textY = lineY2-4
-                if (area.hour >= 7) textX -= ((area.title.length)*5)+5
+                if (firstHour >= 7) textX -= ((area.title.length)*5)+5
                 textElm.setAttributeNS(null, "x", textX);
                 textElm.setAttributeNS(null, "y", textY);
                 textElm.setAttributeNS(null, 'fill', 'white');
@@ -504,7 +523,7 @@ function renderGraphs(test, svgSize, radius, parent) {
                 textElm.classList.add('finding')
                 for (let i=0; i<area.amount; i++) {
                     let tagX = lineX2 + i*-20 - 6
-                    if (area.hour < 7) tagX += ((area.title.length)*5) +5
+                    if (firstHour < 7) tagX += ((area.title.length)*5) +5
                     let tagY = textY - 20
                     let tagElm = document.createElementNS("http://www.w3.org/2000/svg", "use")
                     let hrefTag = area.type=='lump'?'#lump-tag':'cyst-tag'
@@ -563,7 +582,10 @@ function getArc2Path(size, radius, flip) {
 
 function pathFromObject(hour, center, radius) {
 	let str = ''
-	let a1 = (hour-3.5)*(2*Math.PI/12)
+    let firstHour
+    if (Array.isArray(hour)) firstHour = hour[0]
+    else firstHour = hour
+	let a1 = (firstHour-3.5)*(2*Math.PI/12)
 
 	const cos = Math.cos;
 	const sin = Math.sin;
@@ -575,6 +597,8 @@ function pathFromObject(hour, center, radius) {
 	let t1 = a1
     let φ = 0
 	let Δ = (2*π/12)
+    // quick ugly fix, all hour arrays have 2 consequtive hours
+    if (Array.isArray(hour)) Δ *= 2
 	const f_matrix_times = (( [[a,b], [c,d]], [x,y]) => [ a * x + b * y, c * x + d * y]);
 	const f_rotate_matrix = (x => [[cos(x),-sin(x)], [sin(x), cos(x)]]);
 	const f_vec_add = (([a1, a2], [b1, b2]) => [a1 + b1, a2 + b2]);
@@ -602,7 +626,7 @@ function renderInfo(test, doRenderInstructions) {
         testTitleText = 'בדיקות קודמות'
         testSubtitleText = 'אזורים שבהם ממצאים חוזרים'
     } else {
-        testHeaderText = typeToHeaderTextMap[test.type] + ' ' + test.date
+        testHeaderText = '[ ' + typeToHeaderTextMap[test.type] + ' ' + test.date + ' ]'
         testTitleText = test.title
         testSubtitleText = test.subtitle
     }
@@ -610,7 +634,7 @@ function renderInfo(test, doRenderInstructions) {
     createAppendTextElm('h1', testTitleText, infoElm)
     createAppendTextElm('h2', testSubtitleText, infoElm)
     if (doRenderInstructions) {
-        createAppendTextElm('h1', 'הנחיות', infoElm)
+        createAppendTextElm('h1', 'המשך מעקב', infoElm, 'instructions-header')
         createAppendTextElm('h2', test.instructions, infoElm)
     } else if (State.currSection == 2)  {
         if (State.selectedHour) {
@@ -677,14 +701,14 @@ function renderTabs() {
 }
 
 async function init() {
-    // let dateBtnsWrapperElm = document.querySelector(".date-btns-wrapper")
-    // dateBtnsWrapperElm.scrollBy(-100, 0);
     data = await fetchData()
     data.sort((a,b) => stringToTimestamp(a.date) - stringToTimestamp(b.date)) 
     data.forEach((test, i) => {
         test['index'] = i
     });
     renderTabs(data)
+    let dateBtnsWrapperElm = document.querySelector(".date-btns-wrapper")
+    dateBtnsWrapperElm.scrollBy(1, 0);
     renderContent()
 }
 
