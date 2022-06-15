@@ -544,6 +544,9 @@ svg text.finding {
 svg text.svg-side-text {
   font-size: 18px;
 }
+svg text.birads-text {
+  font-size: 16px;
+}
 
 .info svg text {
   font-size: 9px;

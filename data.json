@@ -5,7 +5,10 @@
     "title": "בדיקה תקינה",
     "subtitle": "ללא ממצאים חשודים",
     "instructions": "המשך מעקב שגרתי בהתאם לרמת הסיכון",
-    "scans": [
+    "scans": ["mri-11.15_general_x",
+			  "mri-11.15_general_y",
+			  "mri-11.15_general_z"
+			  
     ],
     "findings": []
   },
@@ -174,28 +177,7 @@
       }
     ]
   },
-  {
-    "type": "US",
-    "date": "08.03.15",
-    "title": "בדיקה תקינה",
-    "subtitle": "ללא ממצאים חשודים",
-    "instructions": "אנא חזרי אל הרופאה המטפלת להמשך מעקב",
-    "scans": [],
-    "findings": [
-      {
-        "side": "left",
-        "type": "lump",
-        "title":"גוש, קוטר 1 ס''מ",
-        "description": "נראה היום כחלק מרקמת השד",
-        "distance": "5",
-        "size": "1",
-        "amount": 1,
-        "hour": 3,
-        "birads": 1,
-        "scans": []
-      }
-    ]
-  },
+  
   {
     "type": "US",
     "date": "06.11.15",
@@ -390,7 +372,8 @@
     "title": "ממצאים שפירים",
     "subtitle": "שאינם ממאירים",
     "instructions": "אנא חזרי אל הרופאה המטפלת להמשך מעקב",
-    "scans": [],
+    "scans": ["US-4.18-left_general-1",
+			 "US-4.18-right_general-1"],
     "findings": [
       {
         "side": "left",
@@ -402,7 +385,7 @@
         "amount": 1,
         "hour": 7,
         "birads": 2,
-        "scans": []
+        "scans": ["us-4.18_left_hour-7"]
       },
       {
         "side": "right",
@@ -414,7 +397,7 @@
         "amount": 1,
         "hour": 10,
         "birads": 2,
-        "scans": []
+        "scans": ["us-4.18_right_hour-10"]
       },
       {
         "side": "right",
@@ -426,7 +409,7 @@
         "amount": 1,
         "hour": 10,
         "birads": 2,
-        "scans": []
+        "scans": ["us-4.18_right_hour-10_1"]
       }
     ]
   },

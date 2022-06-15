@@ -1,6 +1,6 @@
 const State = {
     testsType: 'All',
-    currTestIndex: 0,
+    currTestIndex: 1,
     currSection: 0,
     currSide: 'left',
     selectedHour: 0
@@ -450,15 +450,17 @@ function renderGraphs(test, svgSize, radius, parent) {
             textElm2.appendChild(textPathElm2)
             svgElm.appendChild(textElm1)
             svgElm.appendChild(textElm2)
-            let sideTextElm = document.createElementNS('http://www.w3.org/2000/svg' ,'text')
-            sideTextElm.setAttributeNS(null, 'fill', 'white');
-            sideTextElm.setAttributeNS(null, 'text-anchor', 'middle');
-            sideTextElm.setAttributeNS(null, 'x', center);
-            sideTextElm.setAttributeNS(null, 'y', radius*2 + 40);
-            let sideText = side=='right'? 'ימין':'שמאל'
-            sideTextElm.innerHTML = sideText
-            sideTextElm.classList.add('svg-side-text')
-            svgElm.appendChild(sideTextElm)
+            if (!isInInfo) {
+                let sideTextElm = document.createElementNS('http://www.w3.org/2000/svg' ,'text')
+                sideTextElm.setAttributeNS(null, 'fill', 'white');
+                sideTextElm.setAttributeNS(null, 'text-anchor', 'middle');
+                sideTextElm.setAttributeNS(null, 'x', center);
+                sideTextElm.setAttributeNS(null, 'y', radius*2 + 40);
+                let sideText = side=='right'? 'ימין':'שמאל'
+                sideTextElm.innerHTML = sideText
+                sideTextElm.classList.add('svg-side-text')
+                svgElm.appendChild(sideTextElm)
+            }
             parent.appendChild(svgElm)
         } else {
             let svgElm = document.createElementNS('http://www.w3.org/2000/svg' ,'svg')
@@ -593,6 +595,22 @@ function renderGraphs(test, svgSize, radius, parent) {
                     hoursMarked.push(firstHour)
                     svgElm.append(textElm)
                     svgElm.append(lineElm)
+
+                    let d = pathFromObject(area.hour, center, radius+5, true)
+                    defsElm.innerHTML += ` <path id='birads-path-${side}-${i}' d='${d}' stroke='#fff' fill='none'/>`
+                    let biradsTextPath = document.createElementNS('http://www.w3.org/2000/svg' ,'textPath')
+                    biradsTextPath.setAttributeNS(null, 'href', `#birads-path-${side}-${i}`);
+                    let biradsTextPathOffset = '5%'
+                    if (Array.isArray(area.hour)) biradsTextPathOffset = '17%'
+                    biradsTextPath.setAttributeNS(null, 'startOffset', biradsTextPathOffset);
+                    // biradsTextPath.setAttributeNS(null, 'side', 'left');
+                    biradsTextPath.setAttributeNS(null, 'fill', 'white');
+                    biradsTextPath.innerHTML = 'BIRADS ' + area.birads
+                    
+                    let biradsTextElm = document.createElementNS("http://www.w3.org/2000/svg", "text")
+                    biradsTextElm.classList.add('birads-text')
+                    biradsTextElm.appendChild(biradsTextPath)
+                    svgElm.appendChild(biradsTextElm)
                 }
             }
             let d = ''
@@ -613,15 +631,17 @@ function renderGraphs(test, svgSize, radius, parent) {
             svgElm.append(circleElm2)
             svgElm.append(circleElm3)
             
-            let sideTextElm = document.createElementNS('http://www.w3.org/2000/svg' ,'text')
-            sideTextElm.setAttributeNS(null, 'fill', 'white');
-            sideTextElm.setAttributeNS(null, 'text-anchor', 'middle');
-            sideTextElm.setAttributeNS(null, 'x', center);
-            sideTextElm.setAttributeNS(null, 'y', radius*2 + 40);
-            let sideText = side=='right'? 'ימין':'שמאל'
-            sideTextElm.innerHTML = sideText
-            sideTextElm.classList.add('svg-side-text')
-            svgElm.appendChild(sideTextElm)
+            if (!isInInfo) {
+                let sideTextElm = document.createElementNS('http://www.w3.org/2000/svg' ,'text')
+                sideTextElm.setAttributeNS(null, 'fill', 'white');
+                sideTextElm.setAttributeNS(null, 'text-anchor', 'middle');
+                sideTextElm.setAttributeNS(null, 'x', center);
+                sideTextElm.setAttributeNS(null, 'y', radius*2 + 40);
+                let sideText = side=='right'? 'ימין':'שמאל'
+                sideTextElm.innerHTML = sideText
+                sideTextElm.classList.add('svg-side-text')
+                svgElm.appendChild(sideTextElm)
+            }
             parent.appendChild(svgElm)
         }
     })
@@ -660,7 +680,7 @@ function getArc2Path(size, radius, flip) {
     return `M ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} ${sweep} ${x2} ${y2}`
 }
 
-function pathFromObject(hour, center, radius) {
+function pathFromObject(hour, center, radius, isBirads) {
 	let str = ''
     let firstHour
     if (Array.isArray(hour)) firstHour = hour[0]
@@ -688,10 +708,14 @@ function pathFromObject(hour, center, radius) {
 	const fA = ( (  Δ > π ) ? 1 : 0 );
 	const fS = 1 // ( (  Δ > 0 ) ? 1 : 0 );
 	const fS2 = ( (  Δ > 0 ) ? 0 : 1 );
-	let outerArc = "M " + sX1 + " " + sY1 + " A " + [ rx1 , ry1 , φ / (2*π) *360, fA, fS, eX1, eY1 ].join(" ")
-    let line = "L " + cx + " " + cy
-    str = outerArc + line + " Z"
-	return str
+    if (isBirads) {
+        str = "M " + sX1 + " " + sY1 + " A " + [ rx1 , ry1 , φ / (2*π) *360, fA, fS, eX1, eY1 ].join(" ") + ' Z'
+    } else {
+        let outerArc = "M " + sX1 + " " + sY1 + " A " + [ rx1 , ry1 , φ / (2*π) *360, fA, fS, eX1, eY1 ].join(" ")
+        let line = "L " + cx + " " + cy
+        str = outerArc + line + " Z"
+    }
+    return str
 }
 
 
@@ -788,7 +812,7 @@ async function init() {
     });
     renderTabs(data)
     let dateBtnsWrapperElm = document.querySelector(".date-btns-wrapper")
-    dateBtnsWrapperElm.scrollBy(1, 0);
+    dateBtnsWrapperElm.scrollBy(100, 0);
     renderContent()
 }
 
