@@ -26,6 +26,7 @@ function selectedSection(e) {
     if (State.currSection == e.target.dataset.index) return
     makeBtnActive(e , "button.section-btn")
     State.currSection = e.target.dataset.index
+    State.selectedHour = 0
     renderContent()
 }
 
@@ -218,28 +219,36 @@ function renderScans(test) {
     let counter = 0
     sideFindings.forEach(finding => {
         finding.scans.forEach((scan, i) => {
-            if ((test.type == 'US' && counter>=5) || (test.type == 'MRI' && counter>o3)) return
-            let scanElm = document.createElement('img')
-            scanElm.src = 'assets/findings/' + scan + '.png'
+            if ((test.type == 'US' && counter>=5) || (test.type == 'MRI' && counter>3)) return
+            let scanElm = document.createElement('div')
+            scanElm.style.backgroundImage = 'url(assets/findings/' + scan + '.png)'
             scanElm.classList.add('scan')
             if (i == 0 && !hasActive) {
                 scanElm.classList.add('active')
                 hasActive = true
             }
             scanElm.dataset.side = finding.side
+            let scanTitleElm = document.createElement('span')
+            scanTitleElm.classList.add('scan-title')
+            scanTitleElm.innerText = finding.title
+            scanElm.appendChild(scanTitleElm)
             scansWrapperElm.appendChild(scanElm)
             counter++
         })
     })
     test.scans.forEach((scan, i) => {
         if ((test.type == 'US' && counter>5) || (test.type == 'MRI' && counter>3)) return
-        let scanElm = document.createElement('img')
-        scanElm.src = 'assets/findings/' + scan + '.png'
+        let scanElm = document.createElement('div')
+        scanElm.style.backgroundImage = 'url(assets/findings/' + scan + '.png)'
         scanElm.classList.add('scan')
         if (i == 0 && !hasActive) {
             scanElm.classList.add('active')
             hasActive = true
         }
+        // let scanTitleElm = document.createElement('span')
+        // scanTitleElm.classList.add('scan-title')
+        // scanTitleElm.innerText = scan.title
+        // scanElm.appendChild(scanTitleElm)
         scansWrapperElm.appendChild(scanElm)
         counter++
     })
@@ -277,6 +286,7 @@ function renderGraphsManager() {
         let parent
         if (State.selectedHour) {
             parent = document.querySelector('.content .visuals .svg-wrapper')
+            if (!parent) parent = document.querySelector('.content .visuals')
         } else {
             parent = document.querySelector('.content .visuals')
         }
@@ -325,6 +335,7 @@ function renderTimeGraphs(timeMap, svgSize, radius, parent) {
     parent.appendChild(svgWrapper)
     let sides = ["left", "right"]
     let center = svgSize/2
+    if (svgSize<radius*2) center=radius
     sides.forEach(side=>{
         let svgElm = document.createElementNS('http://www.w3.org/2000/svg' ,'svg')
         svgElm.setAttributeNS(null, 'width', svgSize);
@@ -396,7 +407,7 @@ function renderGraphs(test, svgSize, radius, parent) {
             let defsElm = document.createElementNS('http://www.w3.org/2000/svg' ,'defs')
             let size = radius*2/3 - 10
             if (isInInfo) size += 6
-            defsElm.innerHTML = `<path id="arc1" d="${getArc1Path(svgSize, radius, true)}" />
+            defsElm.innerHTML = `<path id="arc1" d="${getArc1Path2(svgSize, radius, true)}" />
             <path id="arc2" d="${getArc2Path(svgSize, size, true)}" />`
             svgElm.appendChild(defsElm)
             let circleElm3 = document.createElementNS('http://www.w3.org/2000/svg' ,'circle')
@@ -429,31 +440,76 @@ function renderGraphs(test, svgSize, radius, parent) {
             let textElm2 = document.createElementNS('http://www.w3.org/2000/svg' ,'text')
             let textPathElm2 = document.createElementNS('http://www.w3.org/2000/svg' ,'textPath')
             textPathElm2.setAttributeNS(null, 'href', `#arc1`);
-            let textPath2Offset = '7.5%'
+            let textPath2Offset = '8%'
             if (isInInfo) textPath2Offset = '5%'
             textPathElm2.setAttributeNS(null, 'startOffset', textPath2Offset);
             textPathElm2.setAttributeNS(null, 'side', 'left');
             textPathElm2.setAttributeNS(null, 'fill', 'white');
             textPathElm2.innerHTML = 'ללא ממצאים חשודים'
-            textPathElm2.style.letterSpacing = isInInfo? '1px':'2px'
+            textPathElm2.style.letterSpacing = isInInfo? '1px':'4px'
             textElm2.appendChild(textPathElm2)
             svgElm.appendChild(textElm1)
             svgElm.appendChild(textElm2)
+            let sideTextElm = document.createElementNS('http://www.w3.org/2000/svg' ,'text')
+            sideTextElm.setAttributeNS(null, 'fill', 'white');
+            sideTextElm.setAttributeNS(null, 'text-anchor', 'middle');
+            sideTextElm.setAttributeNS(null, 'x', center);
+            sideTextElm.setAttributeNS(null, 'y', radius*2 + 40);
+            let sideText = side=='right'? 'ימין':'שמאל'
+            sideTextElm.innerHTML = sideText
+            sideTextElm.classList.add('svg-side-text')
+            svgElm.appendChild(sideTextElm)
             parent.appendChild(svgElm)
         } else {
             let svgElm = document.createElementNS('http://www.w3.org/2000/svg' ,'svg')
             svgElm.setAttributeNS(null, 'width', svgSize);
             svgElm.setAttributeNS(null, 'height', svgSize);
             let defsElm = document.createElementNS('http://www.w3.org/2000/svg' ,'defs')
-            defsElm.innerHTML = `<pattern id='stripes-pattern' patternUnits='userSpaceOnUse' width='20' height='40' patternTransform='scale(1) rotate(0)'>
-                        <rect x='0' y='0' width='100%' height='100%' fill='#00aeef'/>
+            defsElm.innerHTML = `<pattern id='stripes-pattern-1' patternUnits='userSpaceOnUse' width='20' height='40' patternTransform='scale(1) rotate(0)'>
+                        <rect x='0' y='0' width='100%' height='100%' fill='transparent'/>
                         <path d='M0 5h20z' stroke-width='1' stroke='#fff' fill='none'/>
                         <path d='M0 15h20z' stroke-width='1' stroke='#fff' fill='none'/>
                         <path d='M0 25h20z' stroke-width='1' stroke='#fff' fill='none'/>
                         <path d='M0 35h20z' stroke-width='1' stroke='#fff' fill='none'/>
                     </pattern>
-                    <pattern id='dots-pattern' patternUnits='userSpaceOnUse' width='24' height='24' patternTransform='scale(1) rotate(0)'>
-                        <rect x='0' y='0' width='100%' height='100%' fill='#00aeef'/>
+                    <pattern id='dots-pattern-1' patternUnits='userSpaceOnUse' width='24' height='24' patternTransform='scale(1) rotate(0)'>
+                        <rect x='0' y='0' width='100%' height='100%' fill='transparent'/>
+                        <circle cx="8" cy="8" r="2" fill='#fff'/>
+                        <circle cx="20" cy="20" r="2" fill='#fff'/>
+                    </pattern>
+                    <pattern id='stripes-pattern-2' patternUnits='userSpaceOnUse' width='20' height='40' patternTransform='scale(1) rotate(0)'>
+                        <rect x='0' y='0' width='100%' height='100%' fill='#01A9E8'/>
+                        <path d='M0 5h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                        <path d='M0 15h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                        <path d='M0 25h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                        <path d='M0 35h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                    </pattern>
+                    <pattern id='dots-pattern-2' patternUnits='userSpaceOnUse' width='24' height='24' patternTransform='scale(1) rotate(0)'>
+                        <rect x='0' y='0' width='100%' height='100%' fill='#01A9E8'/>
+                        <circle cx="8" cy="8" r="2" fill='#fff'/>
+                        <circle cx="20" cy="20" r="2" fill='#fff'/>
+                    </pattern>
+                    <pattern id='stripes-pattern-3' patternUnits='userSpaceOnUse' width='20' height='40' patternTransform='scale(1) rotate(0)'>
+                        <rect x='0' y='0' width='100%' height='100%' fill='#F7EB01'/>
+                        <path d='M0 5h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                        <path d='M0 15h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                        <path d='M0 25h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                        <path d='M0 35h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                    </pattern>
+                    <pattern id='dots-pattern-3' patternUnits='userSpaceOnUse' width='24' height='24' patternTransform='scale(1) rotate(0)'>
+                        <rect x='0' y='0' width='100%' height='100%' fill='#F7EB01'/>
+                        <circle cx="8" cy="8" r="2" fill='#fff'/>
+                        <circle cx="20" cy="20" r="2" fill='#fff'/>
+                    </pattern>
+                    <pattern id='stripes-pattern-4' patternUnits='userSpaceOnUse' width='20' height='40' patternTransform='scale(1) rotate(0)'>
+                        <rect x='0' y='0' width='100%' height='100%' fill='#E60087'/>
+                        <path d='M0 5h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                        <path d='M0 15h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                        <path d='M0 25h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                        <path d='M0 35h20z' stroke-width='1' stroke='#fff' fill='none'/>
+                    </pattern>
+                    <pattern id='dots-pattern-4' patternUnits='userSpaceOnUse' width='24' height='24' patternTransform='scale(1) rotate(0)'>
+                        <rect x='0' y='0' width='100%' height='100%' fill='#E60087'/>
                         <circle cx="8" cy="8" r="2" fill='#fff'/>
                         <circle cx="20" cy="20" r="2" fill='#fff'/>
                     </pattern>
@@ -481,6 +537,7 @@ function renderGraphs(test, svgSize, radius, parent) {
             circleElm3.setAttributeNS(null, 'r', radius/3);
             svgElm.append(circleElm1)
             console.log(findings);
+            let hoursMarked = []
             for (let i=0; i<findings.length; i++) {
                 let area = findings[i]
                 let chunckElm = document.createElementNS("http://www.w3.org/2000/svg", "path")
@@ -488,8 +545,8 @@ function renderGraphs(test, svgSize, radius, parent) {
                 chunckElm.setAttributeNS(null, "d", d);
                 chunckElm.setAttributeNS(null, 'stroke', 'white');
                 let patternFillUrl
-                if (area.type == 'cyst') patternFillUrl = 'url(#dots-pattern)'
-                else if (area.type == 'lump') patternFillUrl = 'url(#stripes-pattern)'
+                if (area.type == 'cyst') patternFillUrl = `url(#dots-pattern-${area.birads})`
+                else if (area.type == 'lump') patternFillUrl = `url(#stripes-pattern-${area.birads})`
                 else patternFillUrl = '#56a4da'
                 chunckElm.setAttributeNS(null, 'fill', patternFillUrl);
                 svgElm.append(chunckElm)
@@ -499,41 +556,44 @@ function renderGraphs(test, svgSize, radius, parent) {
                 let firstHour
                 if (Array.isArray(area.hour)) firstHour=area.hour[0]
                 else firstHour=area.hour
-                let angle = (Math.PI/12)*((-firstHour*2)+13)
-                let length = 40
-                let lineX1 = center + Math.sin(angle)*lineRadius
-                let lineY1 = center + Math.cos(angle)*lineRadius
-                let lineX2 = center + Math.sin(angle)*(lineRadius+length)
-                let lineY2 = center + Math.cos(angle)*(lineRadius+length)
-                let lineH = 90
-                if (firstHour >= 7) lineH *= -1
-                let lineD = `M ${lineX1} ${lineY1} L ${lineX2} ${lineY2} h ${lineH}`
-                lineElm.setAttributeNS(null, "d", lineD);
-                lineElm.setAttributeNS(null, 'stroke', 'white');
-                lineElm.setAttributeNS(null, 'fill', 'none');
-                lineElm.setAttributeNS(null, 'stroke-dasharray', '4 4');
-                let textElm = document.createElementNS("http://www.w3.org/2000/svg", "text")
-                let textX = lineX2 + 5
-                let textY = lineY2-4
-                if (firstHour >= 7) textX -= ((area.title.length)*5)+5
-                textElm.setAttributeNS(null, "x", textX);
-                textElm.setAttributeNS(null, "y", textY);
-                textElm.setAttributeNS(null, 'fill', 'white');
-                textElm.innerHTML = area.title
-                textElm.classList.add('finding')
-                for (let i=0; i<area.amount; i++) {
-                    let tagX = lineX2 + i*-20 - 6
-                    if (firstHour < 7) tagX += ((area.title.length)*5) +5
-                    let tagY = textY - 20
-                    let tagElm = document.createElementNS("http://www.w3.org/2000/svg", "use")
-                    let hrefTag = area.type=='lump'?'#lump-tag':'cyst-tag'
-                    tagElm.setAttributeNS(null, 'href', hrefTag);
-                    tagElm.setAttributeNS(null, 'x', tagX);
-                    tagElm.setAttributeNS(null, 'y', tagY);
-                    svgElm.append(tagElm)
+                if (hoursMarked.indexOf(firstHour) == -1) {
+                    let angle = (Math.PI/12)*((-firstHour*2)+13)
+                    let length = 40
+                    let lineX1 = center + Math.sin(angle)*lineRadius
+                    let lineY1 = center + Math.cos(angle)*lineRadius
+                    let lineX2 = center + Math.sin(angle)*(lineRadius+length)
+                    let lineY2 = center + Math.cos(angle)*(lineRadius+length)
+                    let lineH = 90
+                    if (firstHour >= 7) lineH *= -1
+                    let lineD = `M ${lineX1} ${lineY1} L ${lineX2} ${lineY2} h ${lineH}`
+                    lineElm.setAttributeNS(null, "d", lineD);
+                    lineElm.setAttributeNS(null, 'stroke', 'white');
+                    lineElm.setAttributeNS(null, 'fill', 'none');
+                    lineElm.setAttributeNS(null, 'stroke-dasharray', '4 4');
+                    let textElm = document.createElementNS("http://www.w3.org/2000/svg", "text")
+                    let textX = lineX2 + 5
+                    let textY = lineY2-4
+                    if (firstHour >= 7) textX -= ((area.title.length)*5)+5
+                    textElm.setAttributeNS(null, "x", textX);
+                    textElm.setAttributeNS(null, "y", textY);
+                    textElm.setAttributeNS(null, 'fill', 'white');
+                    textElm.innerHTML = area.title
+                    textElm.classList.add('finding')
+                    for (let i=0; i<area.amount; i++) {
+                        let tagX = lineX2 + i*-20 - 6
+                        if (firstHour < 7) tagX += ((area.title.length)*5) +5
+                        let tagY = textY - 20
+                        let tagElm = document.createElementNS("http://www.w3.org/2000/svg", "use")
+                        let hrefTag = area.type=='lump'?'#lump-tag':'cyst-tag'
+                        tagElm.setAttributeNS(null, 'href', hrefTag);
+                        tagElm.setAttributeNS(null, 'x', tagX);
+                        tagElm.setAttributeNS(null, 'y', tagY);
+                        svgElm.append(tagElm)
+                    }
+                    hoursMarked.push(firstHour)
+                    svgElm.append(textElm)
+                    svgElm.append(lineElm)
                 }
-                svgElm.append(textElm)
-                svgElm.append(lineElm)
             }
             let d = ''
             // for (let i=0; i<6; i++) {
@@ -553,6 +613,15 @@ function renderGraphs(test, svgSize, radius, parent) {
             svgElm.append(circleElm2)
             svgElm.append(circleElm3)
             
+            let sideTextElm = document.createElementNS('http://www.w3.org/2000/svg' ,'text')
+            sideTextElm.setAttributeNS(null, 'fill', 'white');
+            sideTextElm.setAttributeNS(null, 'text-anchor', 'middle');
+            sideTextElm.setAttributeNS(null, 'x', center);
+            sideTextElm.setAttributeNS(null, 'y', radius*2 + 40);
+            let sideText = side=='right'? 'ימין':'שמאל'
+            sideTextElm.innerHTML = sideText
+            sideTextElm.classList.add('svg-side-text')
+            svgElm.appendChild(sideTextElm)
             parent.appendChild(svgElm)
         }
     })
@@ -566,6 +635,17 @@ function getArc1Path(size, radius, flip) {
     let y2 = center + Math.cos(-Math.PI/3)*radius
     let sweep = flip? 1:0
     let largeArc = flip? 0:1
+    return `M ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} ${sweep} ${x2} ${y2}`
+}
+
+function getArc1Path2(size, radius, flip) {
+    let center = size/2
+    let x1 = center + Math.sin(-Math.PI/3)*radius
+    let y1 = center + Math.cos(-Math.PI/3)*radius
+    let x2 = center + Math.sin(Math.PI/3)*radius
+    let y2 = center + Math.cos(Math.PI/3)*radius
+    let sweep = 0
+    let largeArc = 0    
     return `M ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} ${sweep} ${x2} ${y2}`
 }
 
